@@ -17,11 +17,31 @@
 	}
 }
 
+html {
+	background-color: var(--background);
+}
+
 body {
 	background-color: var(--background);
 	font-family: 'Fira Sans';
 	font-weight: 400;
 	color: var(--text);
+}
+
+.no-gap-bottom {
+	margin-bottom: 0px;
+}
+
+.no-gap-top {
+	margin-top: 0px;
+}
+
+.content-sh2 {
+	margin-top: 25px;
+}
+
+.content-sh2-first {
+	margin-top: 15px;
 }
 
 h1, h2, h3, h4, h5 {
