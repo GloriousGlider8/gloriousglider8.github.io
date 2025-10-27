@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	<title>gloriousglider8's js mii renderer</title>
+	<link rel="stylesheet" href="/assets/styles/common.css">
+	<script src="https://kit.fontawesome.com/1a33e75b22.js" crossorigin="anonymous"></script>
+</head>
+<body class="background-default" style="overflow: visible; overflow-x: hidden;">
+	<p class="top-bar yellow"><i class="fa-solid fa-circle-exclamation icon-embed-in-topbar"></i>The JS Mii Renderer is not functional yet.</p>
+	<div class="center-cont">
+	<form class="form-in-flex">
+		<h1 class="text-center">JS Mii Renderer</h1>
+		<div class="button-container space-bottom">
+			<button type="button" class="button contained-button"><i class="fa-solid fa-download icon-embed-in-text"></i>Download Model</button>
+			<button type="button" class="button contained-button"><i class="fa-solid fa-square-binary icon-embed-in-text"></i>Convert Data</button>
+		</div>
+
+		<img src="/assets/none.png" style="width: 100%; height: 100%" alt="Mii Image">
+		<br/>
+
+		<div class="button-container">
+		<input type="file" id="f" class="contained-button">
+		<button class="button contained-button green" type="button"><i class="fa-solid fa-image icon-embed-in-text"></i>Render</button>
+		</div>
+		<p style="margin-top: 2px;">Supports <a href="https://mii.j0.lol/wiki/RFLStoreData">RSD</a>, <a href="https://mii.j0.lol/wiki/Ver3StoreData">FFSD (+CFSD)</a>, <a href="https://mii.j0.lol/wiki/Nn::mii::CharInfo">CHARINFO</a> and <a href="/fu-mii/ff/miic">MIIC</a>.</p>
+
+		<label for="exp">Expression</label>
+		<select id="exp">
+			<optgroup label="FFL">
+			<option value="normal">Normal</option>
+			<option value="smile">Smile</option>
+			</optgroup>
+			<option value="custom">Custom</option>
+		</select>
+		<div class="button-container">
+		<input type="file" id="e" class="contained-button">
+		<p class="contained-button">Select "Custom" to use a <a href="/fu-mii/ff/mexp">MEXP file</a>.</p>
+		</div>
+		<br/>
+
+		<label for="res">Resource Type</label>
+		<select id="res">
+			<optgroup label="FFL">
+			<option value="/js-mii/md/ffh.dat">FFLResHigh</option>
+			<option value="/js-mii/md/ffm.dat">FFLResMiddle</option>
+			</optgroup>
+			<optgroup label="AFL">
+			<option value="/js-mii/md/afl.dat">AFLResHigh_2_3</option>
+			</optgroup>
+			<optgroup label="CFL">
+			<option value="/js-mii/md/cfl.dat">CFLRes</option>
+			</optgroup>
+		</select>
+		<br/>
+
+
+
+		<button type="button" class="collapsible">About This<i class="fa-solid fa-caret-right caret-right"></i></button>
+		<div class="collapsed-content">
+			<p>This is a JS transpile of a <a href="https://github.com/GloriousGlider8/FusionFL">fully client-sided Mii library</a> written in<br/><a href="https://fusion-lang.org/">Fusion Lang</a> by <a href="https://github.com/GloriousGlider8">GloriousGlider8</a> and <a href="https://github.com/ArianKordi">ArianKordi</a>. 
+			If you want to use<br/>this for a project of your own, go ahead! Documentation is <a href="/fu-mii">here</a>.</p>
+		</div>
+	</form>
+	</div>
+	<script>
+		var coll = document.getElementsByClassName("collapsible");
+		var i;
+
+		for (i = 0; i < coll.length; i++) {
+			coll[i].addEventListener("click", function() {
+			let content = this.nextElementSibling;
+			if (content.style.height && content.style.height !== "0px") {
+				content.style.border = "0px";
+				content.style.height = "0px";
+			} else {
+				content.style.border = "1px solid var(--background-200)";
+				content.style.height = content.scrollHeight + "px";
+			}
+			this.classList.toggle("collapsible-active");
+		});
+		}
+	</script>
+</body>
+</html>
