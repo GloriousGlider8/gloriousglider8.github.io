@@ -301,7 +301,7 @@ h5 {
 	color: var(--notice);
 }
 
-.messagebox {
+.messagebox, blockquote {
 	font-family: "Fira Sans", sans-serif;
 	font-weight: 400;
 	font-style: normal;
@@ -322,7 +322,7 @@ h5 {
 	border: 1px solid var(--warning);
 }
 
-.messagebox.blue {
+.messagebox.blue, blockquote {
 	background-color: color-mix(in oklab, var(--notice) 50%, var(--mix-cl) 50%);
 	border: 1px solid var(--notice);
 }
