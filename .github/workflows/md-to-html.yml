@@ -1,5 +1,5 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: docgen
+run-name: Build docs
 on: [push]
 jobs:
   build-docs:
