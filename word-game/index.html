@@ -111,6 +111,7 @@
 
 		if (guess == word) {
 			window.location.href = `/word-game/yay.html?w=${btoa(word)}&n=${number}&g=${btoa(guessedWords)}&r=${guessedResults}`
+			return
 		}
 
 		if (guessedUsed == number) {
