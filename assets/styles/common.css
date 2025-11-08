@@ -273,6 +273,16 @@ h5 {
 	color: var(--text-50);
 }
 
+.footnote {
+	color: var(--text-400);
+	font-style: italic;
+}
+
+.footnote a, .footnote .emphasis {
+	color: var(--text-500);
+	font-style: italic;
+}
+
 .bold {
 	font-weight: bold;
 }
@@ -322,7 +332,7 @@ h5 {
 	border: 1px solid var(--warning);
 }
 
-.messagebox.blue, blockquote {
+.messagebox.blue {
 	background-color: color-mix(in oklab, var(--notice) 50%, var(--mix-cl) 50%);
 	border: 1px solid var(--notice);
 }
@@ -362,7 +372,8 @@ form {
 }
 
 .dangerous {
-	text-decoration: var(--error) dotted underline;
+	color: var(--error);
+	text-decoration: color-mix(in oklab, var(--error) 85%, var(--mix-cl) 15%) dotted underline;
 }
 
 .hinttext {
@@ -415,7 +426,7 @@ form {
 	display: block;
 }
 
-.inline-block, input[type=file], input[type=text], input[type=email], input[type=password], select {
+.inline-block, input[type=file], input[type=text], input[type=number], input[type=email], input[type=password], select {
 	display: inline-block;
 }
 
@@ -444,6 +455,11 @@ form {
 .contained-button {
 	flex: 1;
 	margin: 0 5px;
+}
+
+hr {
+	border: var(--background-200) 1px solid;
+	border-radius: 2px;
 }
 
 .button-container .contained-button:first-child {
@@ -497,7 +513,7 @@ form {
 	color: white;
 }
 
-input[type=text], input[type=email], input[type=password], select {
+input[type=text], input[type=number], input[type=email], input[type=password], select {
 	width: 100%;
 	padding: 12px;
 	margin: 8px 0;
@@ -512,31 +528,31 @@ input[type=text], input[type=email], input[type=password], select {
 	transition-duration: 0.25s;
 }
 
-input[type=text]:valid, input[type=email]:valid, input[type=password]:valid {
+input[type=text]:valid, input[type=number]:valid, input[type=email]:valid, input[type=password]:valid {
 	background-color: color-mix(in oklab, var(--success) 20%, var(--mix-cl) 80%);
 	transition-duration: 0.25s;
 }
 
 @media (prefers-color-scheme: dark) {
-	input[type=text]:valid, input[type=email]:valid, input[type=password]:valid {
+	input[type=text]:valid, input[type=number]:valid, input[type=email]:valid, input[type=password]:valid {
 		background-color: color-mix(in oklab, var(--success) 40%, var(--mix-cl) 60%);
 		transition-duration: 0.25s;
 	}
 }
 
-input[type=text]:invalid, input[type=email]:invalid, input[type=password]:invalid {
+input[type=text]:invalid, input[type=number]:invalid, input[type=email]:invalid, input[type=password]:invalid {
 	background-color: color-mix(in oklab, var(--error) 20%, var(--mix-cl) 80%);
 	transition-duration: 0.25s;
 }
 
 @media (prefers-color-scheme: dark) {
-	input[type=text]:invalid, input[type=email]:invalid, input[type=password]:invalid {
+	input[type=text]:invalid, input[type=number]:invalid, input[type=email]:invalid, input[type=password]:invalid {
 		background-color: color-mix(in oklab, var(--error) 40%, var(--mix-cl) 60%);
 		transition-duration: 0.25s;
 	}
 }
 
-input[type=text]:blank, input[type=email]:blank, input[type=password]:blank, select:blank {
+input[type=text], input[type=number]:blank, input[type=email]:blank, input[type=password]:blank, select:blank {
 	background-color: var(--mix-cl);
 	transition-duration: 0.25s;
 }
@@ -576,7 +592,7 @@ input[type=text]:blank, input[type=email]:blank, input[type=password]:blank, sel
 }
 
 .collapsed-content {
-	border: 0px;
+	border: 0px solid var(--background-200);
 	border-radius: 2px;
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;

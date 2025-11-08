@@ -6,12 +6,13 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-	<title>gloriousglider8's js mii renderer</title>
+	<title>js mii renderer</title>
 	<link rel="stylesheet" href="/assets/styles/common.css">
 	<script src="https://kit.fontawesome.com/1a33e75b22.js" crossorigin="anonymous"></script>
+	<!--<script src="/js-mii/src/render.js" type="module"></script>!-->
 </head>
 <body class="background-default" style="overflow: visible; overflow-x: hidden;">
-	<p class="top-bar yellow"><i class="fa-solid fa-circle-exclamation icon-embed-in-topbar"></i>The JS Mii Renderer is not functional yet.</p>
+	<p class="top-bar yellow"><i class="fa-solid fa-circle-exclamation icon-embed-in-topbar"></i>Client-sided rendering is not functional yet. Switch backend to "ariankordi.net" to render for the moment.</p>
 	<div class="center-cont">
 	<form class="form-in-flex">
 		<h1 class="text-center">JS Mii Renderer</h1>
@@ -20,12 +21,12 @@
 			<button type="button" class="button contained-button"><i class="fa-solid fa-square-binary icon-embed-in-text"></i>Convert Data</button>
 		</div>
 
-		<img src="/assets/none.png" style="width: 100%; height: 100%" alt="Mii Image">
+		<img src="/assets/none.png" style="width: 100%; height: 100%" alt="Mii Image" id="miiImg">
 		<br/>
 
 		<div class="button-container">
 		<input type="file" id="f" class="contained-button">
-		<button class="button contained-button green" type="button"><i class="fa-solid fa-image icon-embed-in-text"></i>Render</button>
+		<button class="button contained-button green" type="button" onclick="MiiRender();"><i class="fa-solid fa-image icon-embed-in-text"></i>Render</button>
 		</div>
 		<p style="margin-top: 2px;">Supports <a href="https://mii.j0.lol/wiki/RFLStoreData">RSD</a>, <a href="https://mii.j0.lol/wiki/Ver3StoreData">FFSD (+CFSD)</a>, <a href="https://mii.j0.lol/wiki/Nn::mii::CharInfo">CHARINFO</a> and <a href="/fu-mii/ff/miic">MIIC</a>.</p>
 
@@ -46,44 +47,144 @@
 		<label for="res">Resource Type</label>
 		<select id="res">
 			<optgroup label="FFL">
-			<option value="/js-mii/md/ffh.dat">FFLResHigh</option>
-			<option value="/js-mii/md/ffm.dat">FFLResMiddle</option>
+			<option value="fh">FFLResHigh</option>
+			<option value="fm">FFLResMiddle</option>
 			</optgroup>
 			<optgroup label="AFL">
-			<option value="/js-mii/md/afl.dat">AFLResHigh_2_3</option>
+			<option value="af">AFLResHigh_2_3</option>
 			</optgroup>
 			<optgroup label="CFL">
-			<option value="/js-mii/md/cfl.dat">CFLRes</option>
+			<option value="cf">CFLRes</option>
 			</optgroup>
 		</select>
 		<br/>
 
+		<label for="be">Backend</label>
+		<select id="be">
+			<option value="client">Mii.fu</option>
+			<option value="ffl.js">FFL.js</option>
+			<option value="arian">ariankordi.net [FFL Server]</option>
+		</select>
+		<p style="margin-top: 0;">Select Mii.fu to use custom expressions.</p>
 
-
-		<button type="button" class="collapsible">About This<i class="fa-solid fa-caret-right caret-right"></i></button>
-		<div class="collapsed-content">
-			<p>This is a JS transpile of a <a href="https://github.com/GloriousGlider8/FusionFL">fully client-sided Mii library</a> written in<br/><a href="https://fusion-lang.org/">Fusion Lang</a> by <a href="https://github.com/GloriousGlider8">GloriousGlider8</a> and <a href="https://github.com/ArianKordi">ArianKordi</a>. 
-			If you want to use<br/>this for a project of your own, go ahead! Documentation is <a href="/fu-mii">here</a>.</p>
+		<h2 class="text-center">Comparisons</h2>
+		<div class="button-container" style="margin: 0;">
+			<div><img src="/assets/placeholder-wsrender.png" alt="Mii.fu Render"><p style="margin: 0;" class="text-center"><span class="underline text-green">This site</span><br/>Mii.fu</p></div>
+			<div><img src="/assets/arian-wsrender.png" alt="FFL Decomp. Render"><p style="margin: 0;" class="text-center"><a href="https://mii-unsecure.ariankordi.net">ariankordi.net</a><br/>FFL Decomp.</p></div>
+			<div><img src="/assets/miinxw-wsrender.png" alt="FFL.js Render"><p style="margin: 0;" class="text-center"><a href="https://mii.nxw.pw">mii.nxw.pw</a><br/>FFL.js</p></div>
+			<div><img src="/assets/placeholder-wsrender.png" alt="Official Render"><p style="margin: 0;" class="text-center"><span class="underline text-red">Wii U Mii Maker</span></a><br/>Official FFL</p></div>
 		</div>
+
+		<h2 class="text-center">FAQs</h2>
+		
+		<button type="button" class="collapsible">What is this?<i class="fa-solid fa-caret-right caret-right"></i></button>
+		<div class="collapsed-content">
+			<p>This is a client-sided JS transpile of a <a href="https://github.com/GloriousGlider8/FusionFL">Mii library</a> written in <a href="https://fusion-lang.org/">Fusion</a>, by<br/><a href="https://github.com/GloriousGlider8">GloriousGlider8</a> and <a href="https://github.com/ArianKordi">ArianKordi</a>.</p>
+		</div>
+
+		<p class="footnote" style="margin-bottom: 0;">If you have any other questions, feel free to contact me.</p>
+
+		<h2 class="text-center">Projects using Mii.fu</h2>
+		<p>Below are some of my favourite projects that use Mii.fu.<br/>If you want your project to be featured on this list, please contact me!</p>
+		<div class="button-container"><img src="/assets/proj/gdfl.png" alt="GDFL Logo"><div class="contained-button" style="display: flex; flex-direction: column; justify-content: space-between;">
+			<div>
+				<h3 class="text-center" style="margin: 0;">GDFL</h3>
+				<p style="margin: 0;">GDFL is a wrapper of Mii.fu for the <a href="https://godotengine.org/">Godot Game Engine</a>.</p>
+			</div>
+			<div>
+			<p class="footnote" style="margin: 0; margin-bottom: 2px;">License: <a href="https://opensource.org/license/mit">MIT</a>. Author: <a href="https://github.com/GloriousGlider8">GloriousGlider8</a></p>
+			<div class="button-container">
+				<a class="button contained-button" href="https://github.com/GloriousGlider8/GDFL"><i class="fa-solid fa-code icon-embed-in-text"></i>Source</a>
+				<a class="button contained-button" href="/gdfl"><i class="fa-solid fa-file icon-embed-in-text"></i>Webpage</a>
+			</div>
+			</div>
+		</div></div>
+		<hr>
+		<div class="button-container"><img src="/assets/proj/pp2.png" alt="Party Project 2 Logo"><div class="contained-button" style="display: flex; flex-direction: column; justify-content: space-between;">
+			<div>
+				<h3 class="text-center" style="margin: 0;">Party Project 2</h3>
+				<p style="margin: 0;">Party Project 2 is a mii-based party game meant to<br/>replicate the feel of games such as Wii Party (U) and<br/>Mario Party. It uses GDFL.</p>
+			</div>
+			<div>
+			<p class="footnote" style="margin: 0; margin-bottom: 2px;">License: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>. Author: <a href="https://github.com/GloriousGlider8">GloriousGlider8</a></p>
+			<div class="button-container">
+				<a class="button contained-button" href="https://github.com/GloriousGlider8/pproj2"><i class="fa-solid fa-code icon-embed-in-text"></i>Source</a>
+				<a class="button contained-button" href="https://gloriousglider8.itch.io/pproj2"><i class="fa-solid fa-file icon-embed-in-text"></i>Webpage</a>
+			</div>
+			</div>
+		</div></div>
+
+		<h2 class="text-center">Contact</h2>
+		<p>Email: <span class="bold">sam.yt.gg8[at]gmail.com</span><br/>
+		Discord: <span class="bold">GloriousGlider8</span></p>
+
+		<p class="footnote">This project is not associated with Nintendo in any way.<br/>
+		This site uses <a href="https://github.com/mrdoob/three.js">three.js</a> to render 3D models.<br/>Three.js is licensed under the <a href="https://opensource.org/license/mit">MIT license</a>.<br/>
+		<!--<a href="https://godotengine.org/assets/press/icon_color.png">Godot Engine Logo</a> © 2017 Andrea Calabró.<br/>Licensed under the <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International</a>!--></p>
 	</form>
 	</div>
+
 	<script>
-		var coll = document.getElementsByClassName("collapsible");
-		var i;
+	var coll = document.getElementsByClassName("collapsible");
+	var i;
 
 		for (i = 0; i < coll.length; i++) {
-			coll[i].addEventListener("click", function() {
-			let content = this.nextElementSibling;
-			if (content.style.height && content.style.height !== "0px") {
-				content.style.border = "0px";
-				content.style.height = "0px";
-			} else {
-				content.style.border = "1px solid var(--background-200)";
-				content.style.height = content.scrollHeight + "px";
-			}
-			this.classList.toggle("collapsible-active");
-		});
+		coll[i].addEventListener("click", function() {
+		let content = this.nextElementSibling;
+		if (content.style.height && content.style.height !== "0px") {
+			content.style.border = "0px solid var(--background-200)";
+			content.style.height = "0px";
+		} else {
+			content.style.border = "1px solid var(--background-200)";
+			content.style.height = content.scrollHeight + "px";
 		}
-	</script>
+		this.classList.toggle("collapsible-active");
+	});
+	}
+	
+	let miidatb64 = null;
+	let edatb64 = null;
+	const resourceTypeToArianResourceType = {
+		"fh": "high",
+		"fm": "middle",
+		"cf": "low",
+		"af": "high"
+	}
+	const miiImage = document.getElementById("miiImg")
+
+	document.getElementById('f').addEventListener('change', async (event) => {
+		const file = event.target.files[0];
+		if (!file) return;
+
+		miidatb64 = await toBase64(file);
+	});
+
+	document.getElementById('e').addEventListener('change', async (event) => {
+		const file = event.target.files[0];
+		if (!file) return;
+
+		edatb64 = await toBase64(file);
+	});
+
+	function toBase64(file) {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = () => resolve(reader.result.split(',')[1]);
+			reader.onerror = (error) => reject(error);
+			reader.readAsDataURL(file);
+		});
+	}
+
+	function MiiRender() {
+		if (!miidatb64) {
+			alert("Please upload a Mii Data File!");
+		}
+		const resourceType = document.getElementById("res").value
+		if (document.getElementById("be").value == "arian") {
+			miiImage.src = `https://mii-unsecure.ariankordi.net/miis/image.png?width=512&resourceType=${resourceTypeToArianResourceType[resourceType]}&verifyCharInfo=false&verifyCRC16=false&data=${encodeURIComponent(miidatb64)}&expression=${document.getElementById("exp").value}`
+			return;
+		}
+	}
+</script>
 </body>
 </html>

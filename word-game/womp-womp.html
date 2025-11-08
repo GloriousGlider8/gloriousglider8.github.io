@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+	<title>word game</title>
+	<link rel="stylesheet" href="/assets/styles/common.css">
+	<link rel="stylesheet" href="/assets/styles/word-game.css">
+</head>
+<body class="background-default">
+	<div class="center-cont">
+	<form class="form-in-flex">
+	<h1 class="text-center">Oh no!</h1>
+	<p id="failmsg"></p>
+	<div id="game-cont">
+	</div>
+	<div class="button-container" style="padding-top: 25px;">
+		<button class="button contained-button green" type="button" onclick="javascript:copyRes()">Copy results</button>
+		<button class="button contained-button yellow" type="button" onclick="javascript:copyGus()"><span class="hint">Copy guesses<span class="hinttext">Please spoiler-mark this!</span></span></button>
+	</div>
+	<div class="button-container space-top">
+		<a class="button contained-button blue" href="/word-game/make.html">Make my own</a>
+	</div>
+	</form>
+	</div>
+</body>
+<script>
+	function updateClipboard(newClip) {
+	navigator.clipboard.writeText(newClip).then(
+		() => {
+		return true;
+		},
+		() => {
+			alert("we can't write to your clipboard ;-;")
+		return false;
+		},
+	);
+	}
+
+	const params = new URLSearchParams(window.location.search)
+
+	const word = atob(params.get("w")).toUpperCase()
+	const number = params.get("n")
+	const guesses = atob(params.get("g")).toUpperCase().split(";")
+	const results = params.get("r").split(";")
+
+	document.getElementById("failmsg").innerHTML = `You failed to guess the word in ${number} guesses!<br/>The word was:`
+	document.getElementById("game-cont").innerHTML = `<div class="word-row" style="grid-template-columns: repeat(${word.length}, 1fr);" id="word"></div>`
+
+	for (let i = 0; i < word.length; i++) {
+		document.getElementById("word").innerHTML = document.getElementById("word").innerHTML.concat(`<div class="word-panel green"><p>${word.charAt(i)}</p></div>`)
+	}
+
+	function copyRes() {
+		let st = `${results.length} / ${number} guesses used.`
+		for (let i = 0; i < results.length; i++) {
+			st = st.concat("\n")
+			for (let i1 = 0; i1 < results[i].length; i1++) {
+				st = st.concat(`${{"r": "🟥", "g": "🟩", "y": "🟨"}[results[i].charAt(i1)]}`)
+			}
+		}
+		updateClipboard(st)
+	}
+
+	function copyGus() {
+		let st = `${guesses.length} / ${number} guesses used.`
+		for (let i = 0; i < guesses.length; i++) {
+			st = st.concat(`\n${guesses[i]}`)
+		}
+		updateClipboard(st)
+	}
+</script>
+</html>
