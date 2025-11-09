@@ -13,37 +13,39 @@
 	<div class="center-cont">
 	<form class="form-in-flex" action="javascript:doShit()">
 	<h1 class="text-center">Word Game</h1>
-	<p>literally just a wordle clone but it supports custom words for freeee</p>
-	<label for="word">Correct Word:</label>
-	<input type="text" id="word" minlength="2" maxlength="10" pattern="[a-zA-Z]*" title="Only letters allowed" required>
+	<p>Random Configuration</p>
+	<label for="word">Word Length:</label>
+	<input type="number" id="word" min="2" max="10" required>
 	<label for="num">Maximum Number of Guesses:</label>
 	<input type="number" id="num" min="2" max="20" required>
 	<div class="button-container" style="margin-bottom: 0;">
-	<a href="/word-game/randomcfg.html" class="button blue contained-button">Random</a>
-	<a href="/word-game/marathoncfg.html" class="button blue contained-button">Marathon Mode</a>
-	<button type="submit" class="button green contained-button">Generate URL</button>
+	<a href="/word-game/make.html" class="button blue contained-button">Manual</a>
+	<button type="submit" class="button green contained-button">Start</button>
 	</div>
-	<p id="msg" style="margin-bottom: 0;"></p>
 	</form>
 	</div>
 </body>
 <script>
-	function updateClipboard(newClip) {
-	navigator.clipboard.writeText(newClip).then(
-		() => {
-		return true;
-		},
-		() => {
-			alert("we can't write to your clipboard ;-;")
-		return false;
-		},
-	);
+	async function getWord(len) {
+		try {
+			const response = await fetch(`https://random-word-api.herokuapp.com/word?length=${len}`);
+			if (!response.ok) {alert("error fetching random word"); return null;}
+			const data = await response.json();
+			return data;
+		} catch (err) {
+			alert("error fetching random word");
+			return null;
+		}
 	}
-	function doShit() {
-		const wordDat = window.btoa(document.getElementById("word").value.toLowerCase())
+
+	async function doShit() {
+		const wordLen = document.getElementById("word").value.toLowerCase()
 		const nums = document.getElementById("num").value
-		updateClipboard(`https://gloriousglider8.github.io/word-game?w=${wordDat}&n=${nums}`)
-		document.getElementById("msg").innerHTML = "URL copied to clipboard"
+
+		const word = (await getWord(wordLen))[0].toLowerCase()
+		const wordDat = window.btoa(word)
+
+		window.location.href = `/word-game?w=${wordDat}&n=${nums}`
 	}
 </script>
 </html>

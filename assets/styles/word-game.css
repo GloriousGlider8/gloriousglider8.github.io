@@ -173,20 +173,42 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	transition-duration: 0.5s;
+	transform: scale(1);
+	transition-duration: 0s;
+	opacity: 1;
 }
 
 .word-panel.green {
+	transition-duration: 0.5s;
+	transition: transform 0.5s opacity 0.5s;
 	background-color: color-mix(in oklab, var(--success) 50%, var(--mix-cl) 50%);
 	border: 1px solid color-mix(in oklab, var(--success) 70%, var(--mix-cl) 30%);
 }
 
 .word-panel.yellow {
+	transition-duration: 0.5s;
+	transition: transform 0.5s opacity 0.5s;
 	background-color: color-mix(in oklab, var(--warning) 50%, var(--mix-cl) 50%);
 	border: 1px solid color-mix(in oklab, var(--warning) 70%, var(--mix-cl) 30%);
 }
 
 .word-panel.red {
+	transition-duration: 0.5s;
+	transition: transform 0.5s opacity 0.5s;
 	background-color: color-mix(in oklab, var(--error) 50%, var(--mix-cl) 50%);
 	border: 1px solid color-mix(in oklab, var(--error) 70%, var(--mix-cl) 30%);
+}
+
+.word-panel.clear {
+	transform: scale(0) rotate(50deg);
+	opacity: 0;
+	transition-duration: 0.5s;
+	transition: transform 0.5s opacity 0.5s;
+}
+
+.word-panel.clear-correct {
+	transform: scale(2.5);
+	opacity: 0;
+	transition-duration: 0.5s;
+	transition: transform 0.5s opacity 0.5s;
 }

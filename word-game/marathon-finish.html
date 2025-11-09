@@ -14,15 +14,14 @@
 <body class="background-default">
 	<div class="center-cont">
 	<form class="form-in-flex">
-	<h1 class="text-center">Hooray!</h1>
-	<p id="passmsg"></p>
+	<h1 class="text-center">Finish!</h1>
+	<p id="failmsg"></p>
 	<div id="game-cont">
 	</div>
-	<div class="button-container" style="padding-top: 25px;">
-		<button class="button contained-button green" type="button" onclick="javascript:copyRes()">Copy results</button>
-		<button class="button contained-button yellow" type="button" onclick="javascript:copyGus()"><span class="hint">Copy guesses<span class="hinttext">Please spoiler-mark this!</span></span></button>
+	<p>Your final score was:</p>
+	<div id="score-cont">
 	</div>
-	<div class="button-container space-top">
+	<div class="button-container" style="padding-top: 25px;">
 		<a class="button contained-button blue" href="/word-game/make.html">New Puzzle</a>
 	</div>
 	</form>
@@ -45,33 +44,18 @@
 
 	const word = atob(params.get("w")).toUpperCase()
 	const number = params.get("n")
-	const guesses = atob(params.get("g")).toUpperCase().split(";")
-	const results = params.get("r").split(";")
+	const score = params.get("p")
 
-	document.getElementById("passmsg").innerHTML = `You guesses the word after ${results.length} tries!<br/>The word was:`
+	document.getElementById("failmsg").innerHTML = `You failed to guess the word in ${number} guesses!<br/>The word was:`
 	document.getElementById("game-cont").innerHTML = `<div class="word-row" style="grid-template-columns: repeat(${word.length}, 1fr);" id="word"></div>`
+	document.getElementById("score-cont").innerHTML = `<div class="word-row" style="grid-template-columns: repeat(${word.length}, 1fr);" id="score"></div>`
 
 	for (let i = 0; i < word.length; i++) {
 		document.getElementById("word").innerHTML = document.getElementById("word").innerHTML.concat(`<div class="word-panel green"><p>${word.charAt(i)}</p></div>`)
 	}
 
-	function copyRes() {
-		let st = `${results.length} / ${number} guesses used.`
-		for (let i = 0; i < results.length; i++) {
-			st = st.concat("\n")
-			for (let i1 = 0; i1 < results[i].length; i1++) {
-				st = st.concat(`${{"r": "🟥", "g": "🟩", "y": "🟨"}[results[i].charAt(i1)]}`)
-			}
-		}
-		updateClipboard(st)
-	}
-
-	function copyGus() {
-		let st = `${guesses.length} / ${number} guesses used.`
-		for (let i = 0; i < guesses.length; i++) {
-			st = st.concat(`\n${guesses[i]}`)
-		}
-		updateClipboard(st)
+	for (let i = 0; i < word.length; i++) {
+		document.getElementById("score").innerHTML = document.getElementById("score").innerHTML.concat(`<div class="word-panel"><p>${score.toString().padStart(word.length, "0").charAt(i)}</p></div>`)
 	}
 </script>
 </html>

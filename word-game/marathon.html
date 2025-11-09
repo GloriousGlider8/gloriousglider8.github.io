@@ -15,8 +15,7 @@
 <body id="body" class="background-default" style="overflow-y: auto;">
 	<div class="center-cont" style="padding-top: 0%; padding-bottom: 0%;" id="center-cont">
 	<form class="form-in-flex" action="javascript:doShit()">
-	<h1 class="text-center">Word Game</h1>
-	<p>literally just a wordle clone but it supports custom words for freeee</p>
+	<h1 class="text-center">Word Marathon</h1>
 	<button type="button" class="collapsible">Stats<i class="fa-solid fa-caret-right caret-right"></i></button>
 		<div class="collapsed-content">
 			<p id="stat-text"></p>
@@ -50,6 +49,18 @@
 	}
 </script>
 <script>
+	async function getWords(len, count) {
+		try {
+			const response = await fetch(`https://random-word-api.herokuapp.com/word?length=${len}&number=${count}`);
+			if (!response.ok) {alert("error fetching random word"); return null;}
+			const data = await response.json();
+			return data;
+		} catch (err) {
+			alert("error fetching random word");
+			return null;
+		}
+	}
+
 	function shuffleA(a) {
 		for (let i = a.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));
@@ -59,22 +70,36 @@
 
 	const params = new URLSearchParams(window.location.search)
 
-	if (!params.has("w")) {window.location.replace("/word-game/make.html")}
+	if (!params.has("w")) {window.location.replace("/word-game/marathoncfg.html")}
 
-	const word = window.atob(params.get("w")).toLowerCase()
+	const wdLetters = params.get("w")
 	const number = params.get("n")
 
-	const wdLetters = word.length
-
 	let guessedUsed = 0
-	let guessedWords = ""
-	let guessedResults = ""
+
+	let word = ""
+	let points = 0
+
+	let wordStore = []
+
+	async function newWord() {
+		if (wordStore.length == 0) {
+			wordStore = await getWords(wdLetters, 50)
+			console.log(wordStore)
+		}
+		word = wordStore.pop().toLowerCase()
+		hintAvailable = []
+		for (let i = 0; i < wdLetters; i++) {
+			hintAvailable.push(i)
+		}
+	}
 
 	function updateStatText() {
-		document.getElementById("stat-text").innerHTML = `${wdLetters} Letters<br/>${guessedUsed}/${number} Guesses`
+		document.getElementById("stat-text").innerHTML = `${wdLetters} Letters<br/>${guessedUsed}/${number} Slots Filled<br/>${points} Point(s)`
 	}
 
 	updateStatText()
+	newWord()
 
 	document.getElementById("word").setAttribute("minlength", wdLetters)
 	document.getElementById("word").setAttribute("maxlength", wdLetters)
@@ -90,14 +115,16 @@
 			document.getElementById(`row${i}`).innerHTML = document.getElementById(`row${i}`).innerHTML.concat(`<div class="word-panel" id="row${i}-letter${i1}"><p id="row${i}-text${i1}" style="color: transparent;">A</p></div>`)
 		}
 	}
+
+	function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
+	let guessAllowed = true
 	
-	function doShit() {
+	async function doShit() {
+		if (!guessAllowed) {return}
 		const guess = document.getElementById("word").value.toLowerCase()
-		if (guessedUsed != 0) {
-			guessedWords = guessedWords.concat(";")
-			guessedResults = guessedResults.concat(";")
-		}
-			guessedWords = guessedWords.concat(guess)
 		document.getElementById("word").value = ""
 
 		for (let i = 0; i < wdLetters; i++) {
@@ -105,35 +132,54 @@
 			document.getElementById(`row${guessedUsed}-text${i}`).style.color = "var(--text-700)"
 			if (word.charAt(i) == guess.charAt(i)) {
 				document.getElementById(`row${guessedUsed}-letter${i}`).classList.add("green")
-				guessedResults = guessedResults.concat("g")
 			} else if (word.includes(guess.charAt(i))) {
 				document.getElementById(`row${guessedUsed}-letter${i}`).classList.add("yellow")
-				guessedResults = guessedResults.concat("y")
 			} else {
 				document.getElementById(`row${guessedUsed}-letter${i}`).classList.add("red")
-				guessedResults = guessedResults.concat("r")
 			}
 		}
 
 		guessedUsed++
+		
+		if (word == guess) {
+			guessAllowed = false
+			for (let row = 0; row < guessedUsed - 1; row++) {
+			for (let i = 0; i < wdLetters; i++) {
+				document.getElementById(`row${row}-letter${i}`).classList.add("clear")
+			}}
+			for (let i = 0; i < wdLetters; i++) {
+				document.getElementById(`row${guessedUsed - 1}-letter${i}`).classList.add("clear-correct")
+			}
+			points++
+			await sleep(1000)
+			for (let row = 0; row < guessedUsed; row++) {
+			for (let i = 0; i < wdLetters; i++) {
+				document.getElementById(`row${row}-letter${i}`).classList.remove("green")
+				document.getElementById(`row${row}-letter${i}`).classList.remove("yellow")
+				document.getElementById(`row${row}-letter${i}`).classList.remove("red")
+				document.getElementById(`row${row}-letter${i}`).classList.remove("clear")
+				document.getElementById(`row${row}-text${i}`).innerHTML = ""
+				document.getElementById(`row${row}-text${i}`).style.color = "transparent"
+			}}
+			for (let i = 0; i < wdLetters; i++) {
+				document.getElementById(`row${guessedUsed - 1}-letter${i}`).classList.remove("clear-correct")
+				document.getElementById(`row${guessedUsed - 1}-letter${i}`).classList.remove("green")
+				document.getElementById(`row${guessedUsed - 1}-text${i}`).innerHTML = ""
+				document.getElementById(`row${guessedUsed - 1}-text${i}`).style.color = "transparent"
+			}
+			guessedUsed = 0
+			newWord()
+			guessAllowed = true
+		}
 
 		updateStatText()
 
-		if (guess == word) {
-			window.location.href = `/word-game/yay.html?w=${btoa(word)}&n=${number}&g=${btoa(guessedWords)}&r=${guessedResults}`
-			return
-		}
-
 		if (guessedUsed == number) {
-			window.location.href = `/word-game/womp-womp.html?w=${btoa(word)}&n=${number}&g=${btoa(guessedWords)}&r=${guessedResults}`
+			window.location.href = `/word-game/marathon-finish.html?n=${number}&p=${points}&w=${window.btoa(word)}`
 		}
 	}
 
 	let hintAvailable = []
-
-	for (let i = 0; i < wdLetters; i++) {
-		hintAvailable.push(i)
-	}
 
 	shuffleA(hintAvailable)
 

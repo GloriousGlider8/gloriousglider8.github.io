@@ -13,8 +13,8 @@
 </head>
 <body class="background-default" style="overflow: visible; overflow-x: hidden;">
 	<p class="top-bar yellow"><i class="fa-solid fa-circle-exclamation icon-embed-in-topbar"></i>Client-sided rendering is not functional yet. Switch backend to "ariankordi.net" to render for the moment.</p>
-	<div class="center-cont">
-	<form class="form-in-flex">
+	<div class="center-cont" style="padding-top: 600px; padding-bottom: 600px;" id="center-cont">
+	<form class="form-in-flex" action="javascript:MiiRender();">
 		<h1 class="text-center">JS Mii Renderer</h1>
 		<div class="button-container space-bottom">
 			<button type="button" class="button contained-button"><i class="fa-solid fa-download icon-embed-in-text"></i>Download Model</button>
@@ -26,7 +26,7 @@
 
 		<div class="button-container">
 		<input type="file" id="f" class="contained-button">
-		<button class="button contained-button green" type="button" onclick="MiiRender();"><i class="fa-solid fa-image icon-embed-in-text"></i>Render</button>
+		<button type="submit" class="button contained-button green"><i class="fa-solid fa-image icon-embed-in-text"></i>Render</button>
 		</div>
 		<p style="margin-top: 2px;">Supports <a href="https://mii.j0.lol/wiki/RFLStoreData">RSD</a>, <a href="https://mii.j0.lol/wiki/Ver3StoreData">FFSD (+CFSD)</a>, <a href="https://mii.j0.lol/wiki/Nn::mii::CharInfo">CHARINFO</a> and <a href="/fu-mii/ff/miic">MIIC</a>.</p>
 
@@ -82,7 +82,7 @@
 			<p>This is a client-sided JS transpile of a <a href="https://github.com/GloriousGlider8/FusionFL">Mii library</a> written in <a href="https://fusion-lang.org/">Fusion</a>, by<br/><a href="https://github.com/GloriousGlider8">GloriousGlider8</a> and <a href="https://github.com/ArianKordi">ArianKordi</a>.</p>
 		</div>
 
-		<p class="footnote" style="margin-bottom: 0;">If you have any other questions, feel free to contact me.</p>
+		<p style="margin-bottom: 0;">If you have any other questions, feel free to contact me.</p>
 
 		<h2 class="text-center">Projects using Mii.fu</h2>
 		<p>Below are some of my favourite projects that use Mii.fu.<br/>If you want your project to be featured on this list, please contact me!</p>
@@ -119,8 +119,7 @@
 		Discord: <span class="bold">GloriousGlider8</span></p>
 
 		<p class="footnote">This project is not associated with Nintendo in any way.<br/>
-		This site uses <a href="https://github.com/mrdoob/three.js">three.js</a> to render 3D models.<br/>Three.js is licensed under the <a href="https://opensource.org/license/mit">MIT license</a>.<br/>
-		<!--<a href="https://godotengine.org/assets/press/icon_color.png">Godot Engine Logo</a> © 2017 Andrea Calabró.<br/>Licensed under the <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International</a>!--></p>
+		This site uses <a href="https://github.com/mrdoob/three.js">three.js</a> to render 3D models.<br/>Three.js is licensed under the <a href="https://opensource.org/license/mit">MIT license</a>.<br/></p>
 	</form>
 	</div>
 
