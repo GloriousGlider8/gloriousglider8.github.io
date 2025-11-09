@@ -85,7 +85,6 @@
 	async function newWord() {
 		if (wordStore.length == 0) {
 			wordStore = await getWords(wdLetters, 50)
-			console.log(wordStore)
 		}
 		word = wordStore.pop().toLowerCase()
 		hintAvailable = []
@@ -158,7 +157,7 @@
 				document.getElementById(`row${row}-letter${i}`).classList.remove("yellow")
 				document.getElementById(`row${row}-letter${i}`).classList.remove("red")
 				document.getElementById(`row${row}-letter${i}`).classList.remove("clear")
-				document.getElementById(`row${row}-text${i}`).innerHTML = ""
+				document.getElementById(`row${row}-text${i}`).innerHTML = "A"
 				document.getElementById(`row${row}-text${i}`).style.color = "transparent"
 			}}
 			for (let i = 0; i < wdLetters; i++) {
