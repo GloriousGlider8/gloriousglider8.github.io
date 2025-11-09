@@ -145,6 +145,7 @@
 			for (let row = 0; row < guessedUsed - 1; row++) {
 			for (let i = 0; i < wdLetters; i++) {
 				document.getElementById(`row${row}-letter${i}`).classList.add("clear")
+				document.getElementById(`row${row}-text${i}`).style.color = "transparent"
 			}}
 			for (let i = 0; i < wdLetters; i++) {
 				document.getElementById(`row${guessedUsed - 1}-letter${i}`).classList.add("clear-correct")
@@ -157,13 +158,10 @@
 				document.getElementById(`row${row}-letter${i}`).classList.remove("yellow")
 				document.getElementById(`row${row}-letter${i}`).classList.remove("red")
 				document.getElementById(`row${row}-letter${i}`).classList.remove("clear")
-				document.getElementById(`row${row}-text${i}`).innerHTML = "A"
-				document.getElementById(`row${row}-text${i}`).style.color = "transparent"
 			}}
 			for (let i = 0; i < wdLetters; i++) {
 				document.getElementById(`row${guessedUsed - 1}-letter${i}`).classList.remove("clear-correct")
 				document.getElementById(`row${guessedUsed - 1}-letter${i}`).classList.remove("green")
-				document.getElementById(`row${guessedUsed - 1}-text${i}`).innerHTML = "A"
 				document.getElementById(`row${guessedUsed - 1}-text${i}`).style.color = "transparent"
 			}
 			guessedUsed = 0
