@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+	<title>Quiz Helper</title>
+	<link rel="stylesheet" href="/assets/styles/common.css">
+	<link rel="stylesheet" href="/assets/styles/quiz.css">
+	<script src="https://kit.fontawesome.com/1a33e75b22.js" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div class="correct-bg" style="visibility: visible;">
+		<h1 class="result-title">Correct!</h1>
+		<p class="result-icon"><i class="fa-solid fa-circle-check"></i></p>
+		<div style="width: 100%; display: flex; align-items: center; justify-content: center; top: 80%; position: absolute;">
+			<button type="button" onclick="nextQuestion()" class="button result-button">Next<i class="fa-solid fa-arrow-right next-arrow"></i></button>
+		</div>
+	</div>
+	<div class="incorrect-bg" style="visibility: hidden;">
+		<h1 class="result-title">Oops...</h1>
+		<p class="result-icon"><i class="fa-solid fa-circle-xmark"></i></p>
+	</div>
+</body>
+</html>

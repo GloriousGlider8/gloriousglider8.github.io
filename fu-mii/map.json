@@ -1,0 +1,19 @@
+[
+	{
+		"uri": "/fu-mii/intro.html",
+		"name": "Introduction",
+		"base": true
+	},
+	{
+		"name": "File Formats",
+		"base": false,
+		"id": "ff",
+		"children": [
+			{
+				"uri": "/fu-mii/ff/store.html",
+				"name": "Mii Data Formats",
+				"base": true
+			}
+		]
+	}
+]

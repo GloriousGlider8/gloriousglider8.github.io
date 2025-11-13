@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+	<title>Mii.fu - Mii Data Formats</title>
+	<link rel="stylesheet" href="/assets/styles/common.css">
+	<link rel="stylesheet" href="/assets/styles/highlight.css">
+	<script src="https://kit.fontawesome.com/1a33e75b22.js" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+	<script src="/src/highlightjs-fusion.js" type="module"></script>
+	<script src="/src/doccommon.js"></script>
+	<script src="/src/docsearch.js"></script>
+</head>
+<body class="background-default" style="overflow-y: auto; margin: 0;">
+	<div class="document-sidebar" id="doc-sidebar"></div>
+	<div class="center-cont" style="align-items: flex-start">
+		<div class="document">
+			<h1 class="text-center">Mii Data Formats</h1>
+			<p>This page is not concerned about documenting the internal data structure of any Mii Format. For that, please visit the <a href="https://mii.j0.lol">Mii Technical Wiki</a>.</p>
+
+			<h2 id="wii" style="margin-bottom: 5px;">RevolutionStoreData</h2>
+			<p style="margin-top: 0;">Common Extensions: rsd, mii.</p>
+
+			<p>There is currently no way to load RevolutionStoreData. Please commit to the <a href="https://github.com/GloriousGlider8/Mii.fu">GitHub repo</a> if you can solve this issue.</p>
+
+
+
+			<h2 id="ffl" style="margin-bottom: 5px;">Ver3StoreData</h2>
+			<p style="margin-top: 0;">Common Extensions: ffsd, cfsd, 3dsmii.</p>
+
+			<p>Use <a href="/fu-mii/classes/ver3/store-data.html#func_setfrombytes"><code>Ver3StoreData.SetFromBytes</code></a> to assign properties to a <a href="/fu-mii/classes/ver3/char-info.html"><code>Ver3CharInfo</code></a>.<br/>
+			You can then use <a href="/fu-mii/classes/ver3/store-data.html#func_tostoredatabytes"><code>Ver3StoreData.ToStoreDataBytes</code></a> to encode back to a bytearray.</p>
+
+			<p style="margin-bottom: 5px;">Example:</p>
+			<pre style="margin-top: 0;"><code class="langauge-fusion">// Load from byte[]
+byte[] data; // File content
+Ver3CharInfo charInfo = new Ver3CharInfo();
+Ver3StoreData.SetFromBytes(data, charInfo);
+
+// Encode back to byte[]
+byte[]# output = new byte[96]; // Ver3StoreData is always 96 bytes long
+Ver3StoreData.ToStoreDataBytes(output, charInfo);</code></pre>
+
+
+
+			<h2 id="nx" style="margin-bottom: 5px;">nn::mii CHARINFO</h2>
+			<p style="margin-top: 0;">Common Extensions: charinfo.</p>
+
+			<p>There is currently no way to load CHARINFO files. Please commit to the <a href="https://github.com/GloriousGlider8/Mii.fu">GitHub repo</a> if you can solve this issue.</p>
+		</div>
+	</div>
+</body>
+<script>
+	loadNavBar();
+	hljs.configure({
+		languages: ["fusion"]
+	});
+	hljs.highlightAll();
+</script>
+</html>

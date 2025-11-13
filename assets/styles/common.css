@@ -163,6 +163,12 @@ a {
 	font-style: normal;
 	color: var(--secondary-500);
 	text-decoration: underline;
+	transition-duration: 0.25s;
+}
+
+a:hover {
+	color: var(--secondary-700);
+	transition-duration: 0.25s;
 }
 
 h1 {
@@ -398,6 +404,137 @@ form {
   opacity: 0.8;
 }
 
+.link-icon {
+	font-size: 75%;
+	line-height: 1;
+	margin-left: 0.5%;
+	padding-left: 0;
+	opacity: 0.5;
+	cursor: pointer;
+	transform: scale(66%);
+	transition-duration: 0.5s;
+	color: var(--text-950);
+}
+
+.link-icon:hover {
+	cursor: pointer;
+	transform: scale(90%);
+	opacity: 0.75;
+	transition-duration: 0.5s;
+}
+
+.link-icon:active {
+	cursor: pointer;
+	transform: scale(66%);
+	opacity: 0.25;
+	transition-duration: 0.25s;
+}
+
+.icon-hint {
+	opacity: 0;
+	position: absolute;
+	width: 100px;
+	background-color: black;
+	padding: 7.5px;
+	border-radius: 5px;
+	right: -50px;
+	top: -85px;
+	color: white;
+	pointer-events: none;
+	border: 1px solid grey;
+	transition-duration: 0.5s;
+}
+
+.link-icon:hover .icon-hint,
+.code-copy-button:hover .icon-hint,
+.code-edit-button:hover .icon-hint {
+	opacity: 1;
+	transition-duration: 0.5s;
+}
+
+.code-copy-button .icon-hint,
+.code-edit-button .icon-hint {
+	transform: scale(0.8);
+	top: -70px;
+}
+
+.code-copy-button,
+.code-edit-button {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	width: 40px;
+	height: 20px;
+	align-content: center;
+	padding: 0;
+	color: var(--text-800);
+	opacity: 0.5;
+	transform: scale(100%);
+	transition-duration: 0.5s;
+}
+
+.code-copy-button:hover,
+.code-edit-button:hover {
+	cursor: pointer;
+	transform: scale(125%);
+	opacity: 0.75;
+	transition-duration: 0.5s;
+}
+
+.code-copy-button:active,
+.code-edit-button:active {
+	cursor: pointer;
+	transform: scale(100%);
+	opacity: 0.25;
+	transition-duration: 0.25s;
+}
+
+.code-edit-button {
+	right: 40px;
+}
+
+.source-icon {
+	font-size: 75%;
+	line-height: 1;
+	padding-left: 0;
+	opacity: 0.5;
+	cursor: pointer;
+	transform: scale(66%);
+	transition-duration: 0.5s;
+	color: var(--text-950);
+}
+
+.source-icon:hover {
+	cursor: pointer;
+	transform: scale(90%);
+	opacity: 0.75;
+	transition-duration: 0.5s;
+}
+
+.source-icon:active {
+	cursor: pointer;
+	transform: scale(66%);
+	opacity: 0.25;
+	transition-duration: 0.25s;
+}
+
+code {
+	background-color: var(--background-200);
+	padding: 1px;
+	border-radius: 2px;
+	transition-duration: 0.25s;
+}
+
+@media (prefers-color-scheme: light) {
+	code {
+		background-color: color-mix(in oklab, var(--background-300) 50%, var(--mix-cl) 50%);
+	}
+}
+
+pre {
+	position: relative;
+}
+
 .icon-embed-in-button {
 	font-size: 300%;
 	line-height: 1;
@@ -434,8 +571,40 @@ form {
 	min-width: 65%;
 	min-height: 100%;
 	background-color: var(--background-100);
-	overflow-y: scroll;
-	padding: 10px;
+	padding: 20px;
+	height: auto;
+	margin: 0;
+}
+
+.document-sidebar {
+	min-width: 16.45%;
+	height: 100%;
+	background-color: var(--background-200);
+	position: fixed;
+	margin: 0;
+	z-index: 999;
+	padding: 0;
+	border-right: 1px var(--background-400) solid;
+}
+
+progress {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+::-webkit-progress-bar {
+	background-color: var(--background-300);
+	border-radius: 5px;
+}
+
+::-webkit-progress-value {
+	background-color: var(--success);
+	border-radius: 5px;
+}
+
+::-moz-progress-bar {
+	background-color: var(--success);
 }
 
 .document-content {
@@ -460,6 +629,72 @@ form {
 hr {
 	border: var(--background-200) 1px solid;
 	border-radius: 2px;
+}
+
+.document-sidebar hr {
+	border: var(--background-300) 1px solid;
+	border-radius: 2px;
+	width: 95%;
+}
+
+.sidebar-page-listing {
+	position: relative;
+	background-color: var(--background-300);
+	width: 96.75%;
+	padding: 10px;
+	color: var(--text-950);
+	text-decoration: none;
+	display: block;
+	margin: 0;
+	padding-right: 0;
+}
+
+.sidebar-page-listing:hover {
+	background-color: var(--background-300);
+	color: var(--text-950);
+}
+
+.sidebar-page-listing.clickable:hover {
+	background-color: var(--background-400);
+	color: var(--text-800);
+}
+
+.sidebar-page-listing-children .sidebar-page-listing {
+	background-color: var(--background-400);
+}
+
+.sidebar-page-listing-children .sidebar-page-listing.clickable:hover {
+	background-color: var(--background-500);
+	color: var(--primary-800);
+}
+
+.sidebar-page-expand {
+	position: absolute;
+	right: 5px;
+	transition-duration: 0.25s;
+	opacity: 0.5;
+	cursor: pointer;
+}
+
+.sidebar-page-expand:hover {
+	opacity: 0.75;
+	transition-duration: 0.25s;
+}
+
+.sidebar-page-listing.open .sidebar-page-expand {
+	transform: rotate(90deg);
+	opacity: 1;
+	transition-duration: 0.25s;
+}
+
+.sidebar-page-listing-children {
+	position: absolute;
+	height: 0;
+	overflow: hidden;
+	transition: height 0.25s;
+	top: 39px;
+	width: 100%;
+	left: 0px;
 }
 
 .button-container .contained-button:first-child {
@@ -538,6 +773,10 @@ input[type=text]:valid, input[type=number]:valid, input[type=email]:valid, input
 		background-color: color-mix(in oklab, var(--success) 40%, var(--mix-cl) 60%);
 		transition-duration: 0.25s;
 	}
+	input[type=text]:invalid, input[type=number]:invalid, input[type=email]:invalid, input[type=password]:invalid {
+		background-color: color-mix(in oklab, var(--error) 40%, var(--mix-cl) 60%);
+		transition-duration: 0.25s;
+	}
 }
 
 input[type=text]:invalid, input[type=number]:invalid, input[type=email]:invalid, input[type=password]:invalid {
@@ -545,17 +784,23 @@ input[type=text]:invalid, input[type=number]:invalid, input[type=email]:invalid,
 	transition-duration: 0.25s;
 }
 
-@media (prefers-color-scheme: dark) {
-	input[type=text]:invalid, input[type=number]:invalid, input[type=email]:invalid, input[type=password]:invalid {
-		background-color: color-mix(in oklab, var(--error) 40%, var(--mix-cl) 60%);
-		transition-duration: 0.25s;
-	}
-}
-
-input[type=text], input[type=number]:blank, input[type=email]:blank, input[type=password]:blank, select:blank {
+input[type=text]:blank, input[type=number]:blank, input[type=email]:blank, input[type=password]:blank, select:blank {
 	background-color: var(--mix-cl);
 	transition-duration: 0.25s;
 }
+
+input.page-search[type=text],
+input.page-search[type=text]:valid {
+	background-color: var(--background-300);
+	display: block;
+	width: 95%;
+	left: 2.5%;
+	position: absolute;
+	padding: 5px;
+	padding-left: 10px;
+	border-radius: 5px;
+}
+
 
 .collapsible {
 	background-color: var(--background-50);
