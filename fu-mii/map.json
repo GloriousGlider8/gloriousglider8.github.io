@@ -1,19 +1,46 @@
-[
-	{
-		"uri": "/fu-mii/intro.html",
-		"name": "Introduction",
-		"base": true
-	},
-	{
-		"name": "File Formats",
-		"base": false,
-		"id": "ff",
-		"children": [
-			{
-				"uri": "/fu-mii/ff/store.html",
-				"name": "Mii Data Formats",
-				"base": true
-			}
-		]
-	}
-]
+[{
+	"uri": "/fu-mii",
+	"name": "Welcome",
+	"base": true
+}, {
+	"uri": "/fu-mii/intro.html",
+	"name": "Introduction",
+	"base": true
+}, {
+	"name": "File Formats",
+	"base": false,
+	"id": "ff",
+	"children": [
+		{
+			"uri": "/fu-mii/ff/store.html",
+			"name": "Mii Data Formats",
+			"base": true
+		}
+	]
+},
+
+{"name": "Classes", "base": false, "id": "!NEWSECT"}, 
+
+{
+	"name": "Ver3*",
+	"base": false,
+	"id": "classes/ver3",
+	"children": [
+		{
+			"uri": "/fu-mii/classes/ver3/store-data.html",
+			"name": "Ver3StoreData",
+			"base": true
+		}
+	]
+}, {
+	"name": "FFL*",
+	"base": false,
+	"id": "classes/ffl",
+	"children": [
+		{
+			"uri": "/fu-mii/classes/ffl/resource.html",
+			"name": "FFLResource",
+			"base": true
+		}
+	]
+}]

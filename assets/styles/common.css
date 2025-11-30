@@ -4,6 +4,7 @@
 		--notice: #1e75b8;
 		--success: #1eb828;
 		--warning: #df9320;
+		--gold: #f3b712;
 
 		--mix-cl: white;
 
@@ -75,6 +76,7 @@
 		--notice: #479ee1;
 		--success: #47e151;
 		--warning: #df9321;
+		--gold: #dfbc21;
 
 		--mix-cl: black;
 
@@ -206,6 +208,14 @@ h5 {
 	font-weight: 400;
 	font-style: normal;
 	color: var(--text-800);
+}
+
+.star-rating p {
+	color: var(--gold);
+	padding: 0;
+	margin: 0;
+	font-family: "Roboto Mono", monospace;
+	letter-spacing: -2px;
 }
 
 .background-default {
@@ -621,6 +631,11 @@ progress {
 	width: 100%;
 }
 
+.flexbox-center {
+	display: flex;
+	justify-content: center;
+}
+
 .contained-button {
 	flex: 1;
 	margin: 0 5px;
@@ -695,6 +710,13 @@ hr {
 	top: 39px;
 	width: 100%;
 	left: 0px;
+}
+
+.sidebar-page-listing-section {
+	width: 100%;
+	text-align: center;
+	justify-content: center;
+	font-weight: bold;
 }
 
 .button-container .contained-button:first-child {
@@ -966,4 +988,36 @@ a.button {
 	font-family: "Fira Sans", sans-serif;
 	font-weight: 900;
 	font-style: italic;
+}
+
+.sidebar-thing {
+	background-color: var(--background-100);
+	border-right: 1px solid var(--background-300);
+	padding: 15px;
+	padding-top: 0;
+	position: absolute;
+	height: 100%;
+	width: 300px;
+	overflow: hidden;
+}
+
+.bottombar-thing {
+	background-color: var(--background-100);
+	border-top: 1px solid var(--background-300);
+	padding: 15px;
+	position: absolute;
+	height: 250px;
+	width: 1280px;
+	overflow: hidden;
+}
+
+.centerbox-thing {
+	background-color: var(--background-100);
+	border: 1px solid var(--background-300);
+	border-radius: 5px;
+	padding: 15px;
+	position: absolute;
+	height: 500px;
+	width: 500px;
+	overflow: hidden;
 }
