@@ -6,54 +6,29 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-	<title>Mii.fu - Page Title</title>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+	<title>Mii.fu - TITLE</title>
 	<link rel="stylesheet" href="/assets/styles/common.css">
+	<link rel="stylesheet" href="/assets/styles/highlight.css">
 	<script src="https://kit.fontawesome.com/1a33e75b22.js" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css" media="(prefers-color-scheme: light)">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/agate.min.css" media="(prefers-color-scheme: dark)">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+	<script src="/src/highlightjs-fusion.js" type="module"></script>
+	<script src="/src/doccommon.js"></script>
+	<script src="/src/docsearch.js"></script>
 </head>
-<body class="background-default" style="overflow-y: auto;">
+<body class="background-default" style="overflow-y: auto; margin: 0;">
+	<div class="document-sidebar" id="doc-sidebar"></div>
 	<div class="center-cont" style="align-items: flex-start">
 		<div class="document">
-			<h1 class="text-center">Page Title</h1>
+			<h1 class="text-center">TITLE</h1>
 		</div>
 	</div>
 </body>
 <script>
-	hljs.highlightAll();
-	var coll = document.getElementsByClassName("collapsible");
-	var i;
-
-		for (i = 0; i < coll.length; i++) {
-		coll[i].addEventListener("click", function() {
-		let content = this.nextElementSibling;
-		if (content.style.height && content.style.height !== "0px") {
-			content.style.border = "0px solid var(--background-200)";
-			content.style.height = "0px";
-		} else {
-			content.style.border = "1px solid var(--background-200)";
-			content.style.height = content.scrollHeight + "px";
-		}
-		this.classList.toggle("collapsible-active");
-	});}
-	function updateClipboard(newClip) {
-		navigator.clipboard.writeText(newClip).then(
-			() => {
-			return true;
-			},
-			() => {
-				alert("Failed to update clipboard.")
-			return false;
-			},
-		);
-	}
-	document.querySelectorAll(".code-copy-button").forEach(btn => {
-		btn.addEventListener("click", () => {
-			const codeEl = btn.parentElement.querySelector("code");
-			if (!codeEl) return;
-			updateClipboard(codeEl.innerText); // reuse your existing function
-		});
+	loadNavBar();
+	hljs.configure({
+		languages: ["fusion"]
 	});
+	hljs.highlightAll();
 </script>
 </html>

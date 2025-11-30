@@ -1,7 +1,6 @@
 // Generated automatically with "fut". Do not edit.
 
 /**
- * Taken From https://github.com/ariankordi/mii-fusion-experiments
  * CharInfo for CFL/FFL, representing fields of Ver3StoreData.
  */
 export class Ver3CharInfo
@@ -814,9 +813,6 @@ export class Ver3CharInfo
 	}
 }
 
-/**
- * Taken From https://github.com/ariankordi/mii-fusion-experiments
- */
 export class Ver3StoreData
 {
 
@@ -1005,7 +1001,6 @@ export class Ver3StoreData
 }
 
 /**
- * Taken From https://github.com/ariankordi/mii-fusion-experiments
  * Implements the CRC-16/CCITT checksum calculation.
  * This class provides a static method for computing the CRC-16/CCITT checksum over an input byte array.
  * The algorithm uses the polynomial 0x1021, an initial value of 0xFFFF, and a default context of 0x0000.

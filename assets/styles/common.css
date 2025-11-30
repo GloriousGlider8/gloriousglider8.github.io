@@ -148,7 +148,7 @@ body {
 
 .text-regular,
 p,
-label, li, input[type=file] {
+label, li, input[type=file], button {
 	font-family: "Fira Sans", sans-serif;
 	font-weight: 400;
 	font-style: normal;
@@ -702,6 +702,10 @@ hr {
 	transition-duration: 0.25s;
 }
 
+.smooth-height {
+	transition: height 0.25s;
+}
+
 .sidebar-page-listing-children {
 	position: absolute;
 	height: 0;
@@ -1020,4 +1024,8 @@ a.button {
 	height: 500px;
 	width: 500px;
 	overflow: hidden;
+}
+
+.hidden {
+	display: none;
 }

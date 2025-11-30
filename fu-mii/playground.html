@@ -1,1 +1,38 @@
 <!--https://www.jsdelivr.com/package/npm/monaco-editor?tab=files&path=esm-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	<title>Mii.fu - Playground</title>
+	<link rel="stylesheet" href="/assets/styles/common.css">
+	<link rel="stylesheet" href="/assets/styles/playground.css">
+	<link rel="stylesheet" href="/assets/styles/highlight.css">
+	<script src="https://kit.fontawesome.com/1a33e75b22.js" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+	<script src="/src/highlightjs-fusion.js" type="module"></script>
+	<script src="/src/doccommon.js"></script>
+	<script src="/src/docsearch.js"></script>
+	<script src="/src/playground.js" type="module"></script>
+</head>
+<body class="background-default" style="overflow-y: auto; margin: 0;">
+	<div class="document-sidebar" id="doc-sidebar"></div>
+	<div class="center-cont" style="align-items: flex-start">
+		<div class="document">
+			<h1 class="text-center">Playground</h1>
+			<p>Here, you can play around with Mii.fu's Fusion interface, as well as <a href="https://threejs.org">three.js</a>, for 3D rendering.</p>
+			<div id="editor-container" class="editor-container"></div>
+		</div>
+	</div>
+</body>
+<script>
+	loadNavBar();
+	hljs.configure({
+		languages: ["fusion"]
+	});
+	hljs.highlightAll();
+</script>
+</html>

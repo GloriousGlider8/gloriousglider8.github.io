@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	<title>Song Breakdown</title>
+	<link rel="stylesheet" href="/assets/styles/common.css">
+	<link rel="stylesheet" href="/assets/styles/vstdemo.css">
+	<script src="https://kit.fontawesome.com/1a33e75b22.js" crossorigin="anonymous"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/series-label.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+	<script src="https://code.highcharts.com/themes/adaptive.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/kaitai-struct/KaitaiStream.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/fflate/umd/index.js"></script>
+	<script src="/music/breakdown/Song.js"></script>
+	<script src="/music/breakdown/Collection.js"></script>
+	<script src="/music/breakdown/demos.js"></script>
+</head>
+<body style="overflow: hidden;">
+	<h1 class="text-center">Song Breakdown</h1>
+	<div class="track-options">
+		<div class="button-container" style="height: 100%">
+			<div style="height: 100%; aspect-ratio: 1 / 1;" id="current-chart-cont"></div>
+			<div style="padding-left: 25px;">
+				<h2 id="song-name" style="margin-bottom: 0;"></h2>
+				<p id="song-data" style="margin-top: 5px; margin-bottom: 5px;"></p>
+
+				<div id="track-play" class="track-play"></div>
+			</div>
+			<div style="padding-left: 25px;">
+				<h3 id="active-track-title" style="padding-top: 73px; margin-bottom: 0;">Select a track to view more info and listen to audio demos.</h3>
+				<p id="active-track-info" style="margin-top: 5px; margin-bottom: 5px;"></p>
+
+				<audio id="audio-track" style="margin-top: 5px;" class="hidden" controls></audio>
+			</div>
+		</div>
+	</div>
+	<div style="width: 100%;">
+		<h2 id="other-tracks"></h2>
+		<div id="other-songs" style="overflow-x: scroll; width: 100%;"></div>
+	</div>
+</body>
+</html>

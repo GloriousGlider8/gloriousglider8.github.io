@@ -1,7 +1,4 @@
 // Generated automatically with "fut". Do not edit.
-// i editied it anyway :P
-
-import { ZlibImpl } from "/js-mii/src/zlibimpl.js";
 
 export class BitConverter
 {
@@ -85,54 +82,123 @@ export class BitConverter
 	 */
 	static uIntToFloat(bits)
 	{
-		let sign = (BigInt(bits) & 2147483648n) != 0;
-		let exp = bits >> 23 & 255;
-		let frac = bits & 8388607;
-		let mantissa;
-		let value;
-		if (exp == 0) {
-			if (frac == 0) {
-				return sign ? -0.0 : 0.0;
-			}
-			mantissa = frac / Math.pow(2.0, 23);
-			value = Math.pow(2.0, -126) * mantissa;
-		}
-		else if (exp == 255) {
-			if (frac != 0)
-				return NaN;
-			return sign ? -Infinity : Infinity;
-		}
-		else {
-			mantissa = 1.0 + frac / Math.pow(2.0, 23);
-			value = mantissa * Math.pow(2.0, exp - 127);
-		}
-		return sign ? -value : value;
+		
+            // Not ideal: place into new ArrayBuffer.
+            const arr = new Uint32Array([bits]);
+            // Get DataView and read back as float.
+            return new DataView(arr.buffer)
+                .getFloat32(0, true);
+        return 0.0;
 	}
 
 	static floatToInt(v)
 	{
-		throw new Error("Not implemented for pure Fusion.");
+		
+            const arr = new Float32Array([v]);
+            return new DataView(arr.buffer).getUint32(0, true);
+        return 0;
 	}
 }
 
-export class FUByteUtils
+/**
+ * Convenience class to read values from bitfields
+ */
+export class BitfieldReader
 {
+	value;
+	#offset;
+
 	/**
-	 * Currently only supports Big Endian.
+	 * Move the bit pointer to <code>where</code> bits
 	 */
+	seek(where)
+	{
+		this.#offset = where;
+	}
+
+	/**
+	 * Move the bit pointer ahead by <code>size</code> bit
+	 * This is prefered in place of <code>Seek</code>
+	 */
+	padding(size)
+	{
+		this.#offset += size;
+	}
+
+	/**
+	 * Reads 1 bit and returns it as a <code>bool</code>
+	 */
+	readBool()
+	{
+		return (this.value & 1 << this.#offset++) != 0;
+	}
+
+	/**
+	 * Reads <code>size</code> bits into a <code>byte</code>
+	 */
+	readBits(size)
+	{
+		let result = 0;
+		for (let i = 0; i < size; i++) {
+			let bit = this.value >> this.#offset++ & 1;
+			result |= bit << i;
+		}
+		return result;
+	}
+}
+
+/**
+ * Convenience class to read values from bytes.
+ * All methods assume big-endian byte order.
+ */
+export class ByteReader
+{
 	data;
 	offset = 0;
 
+	/**
+	 * Move the file pointer to <code>where</code> bytes.
+	 */
 	seek(where)
 	{
 		this.offset = where;
 	}
 
+	/**
+	 * Move the file pointer ahead by <code>size</code> bytes.
+	 * This is prefered in place of <code>Seek</code>.
+	 */
 	padding(size)
 	{
 		this.offset += size;
 	}
 
+	/**
+	 * Reads 1 byte into a <code>byte</code>.
+	 * Range: <code>0 .. 255</code>.
+	 */
+	readByte()
+	{
+		return this.data[this.offset++];
+	}
+
+	/**
+	 * Reads <code>size</code> bytes and stores them in a <code>ushort</code>.
+	 * Range: <code>0 .. 65535</code>.
+	 */
+	readUShort(size)
+	{
+		let res = 0;
+		for (let i = 0; i < size; i++) {
+			res = res << 8 | this.data[this.offset++];
+		}
+		return res;
+	}
+
+	/**
+	 * Reads <code>size</code> bytes and stores them in a <code>uint</code>.
+	 * Range: <code>0 .. 2147483647</code>.
+	 */
 	readUInt(size)
 	{
 		let res = 0;
@@ -142,22 +208,118 @@ export class FUByteUtils
 		return res;
 	}
 
+	/**
+	 * Reads <code>size</code> bytes and stores them in a <code>short</code>.
+	 * Range: <code>-32768 .. 32767</code>.
+	 */
+	readSShort(size)
+	{
+		let res = 0;
+		for (let i = 0; i < size; i++) {
+			res = res << 8 | this.data[this.offset++];
+		}
+		let sign_bit = 1 << (size * 8 - 1);
+		if ((res & sign_bit) != 0) {
+			res -= 1 << size * 8;
+		}
+		return res;
+	}
+
+	/**
+	 * Reads <code>size</code> bytes and stores them in an <code>int</code>.
+	 * Range: <code>-2147483648 .. 2147483647</code>.
+	 */
+	readSInt(size)
+	{
+		let res = 0;
+		for (let i = 0; i < size; i++) {
+			res = res << 8 | this.data[this.offset++];
+		}
+		let sign_bit = 1 << (size * 8 - 1);
+		if ((res & sign_bit) != 0) {
+			res -= 1 << size * 8;
+		}
+		return res;
+	}
+
+	/**
+	 * Reads <code>size</code> bytes and stores them in a <code>long</code>.
+	 * Range <code>-9223372036854775808 .. 9223372036854775807</code>.
+	 */
+	readSLong(size)
+	{
+		let res = 0n;
+		for (let i = 0; i < size; i++) {
+			res = res << 8n | BigInt(this.data[this.offset++]);
+		}
+		let sign_bit = 1 << (size * 8 - 1);
+		if ((res & BigInt(sign_bit)) != 0) {
+			res -= BigInt(1 << size * 8);
+		}
+		return res;
+	}
+
+	/**
+	 * Reads 1 byte into a <code>BitfieldReader</code>.
+	 * This serves as a convenience method and still advances the pointer.
+	 */
+	getBitfield()
+	{
+		const b = new BitfieldReader();
+		b.value = this.data[this.offset++];
+		return b;
+	}
+
+	/**
+	 * Reads 4 bytes and stores them in a <code>float</code>.
+	 * Uses the IEEE 754 format.
+	 */
 	readFloat()
 	{
 		let raw = this.readUInt(4);
 		return BitConverter.uIntToFloat(raw);
 	}
 
+	/**
+	 * Reads <code>size</code> bytes and interprets them as a UTF8 string.
+	 */
 	readUTF8(size)
 	{
 		this.offset += size;
 		return new TextDecoder().decode(this.data.subarray(this.offset - size, this.offset - size + size));
 	}
 
+	/**
+	 * Reads <code>size</code> bytes and stores them in <code>buffer</code>.
+	 */
 	readRaw(size, buffer)
 	{
 		buffer.set(this.data.subarray(this.offset, this.offset + size));
 		this.offset += size;
+	}
+}
+
+/**
+ * ZLib compression implementation.
+ * Must be overrided using a library for your target language!
+ */
+export class ZlibImpl
+{
+
+	/**
+	 * Write the decompressed contents of <code>input</code> into <code>output</code>.
+	 * <code>windowBits</code> and <code>originalSize</code> must also be specified.
+	 */
+	decompress(input, output, windowBits, compressedSize, originalSize)
+	{
+	}
+
+	/**
+	 * Write the Compressed contents of <code>input</code> into <code>output</code>.
+	 * <code>level</code> and <code>windowBits</code> must also be specified.
+	 */
+	compress(input, output, level, windowBits)
+	{
 	}
 }
 
@@ -167,12 +329,10 @@ export const FFLiTextureFormat = {
 	R_G_B_A : 2
 }
 
-export class FFLiResourceShapeElementTypeMax
-{
-
-	static VALUE = 9;
-}
-
+/**
+ * The index that each shape element is stored at.
+ * Exmaple: <code>data[FFLiResourceShapeElementType.Position.ToInt()]</code> would get vertex position data.
+ */
 export const FFLiResourceShapeElementType = {
 	POSITION : 0,
 	NORMAL : 1,
@@ -191,13 +351,19 @@ export class Vec3
 	y = NaN;
 	z = NaN;
 
-	fromByteUtils(data)
+	/**
+	 * Reads 3 IEEE 754 4-byte floats into <code>x</code>, <code>y</code> and <code>z</code> respectively.
+	 */
+	fromByteReader(data)
 	{
 		this.x = data.readFloat();
 		this.y = data.readFloat();
 		this.z = data.readFloat();
 	}
 
+	/**
+	 * Convenience function to set <code>x</code>, <code>y</code> and <code>z</code> to <code>Math.NaN</code>.
+	 */
 	setNaN()
 	{
 		this.x = NaN;
@@ -206,17 +372,26 @@ export class Vec3
 	}
 }
 
+/**
+ * Represents the minimum and maximum values of vertex positions in shapes.
+ */
 export class BoundingBox
 {
 	min = new Vec3();
 	max = new Vec3();
 
-	fromByteUtils(data)
+	/**
+	 * Reads 2 <code>Vec3</code>s into <code>min</code> and <code>max</code> respectively.
+	 */
+	fromByteReader(data)
 	{
-		this.min.fromByteUtils(data);
-		this.max.fromByteUtils(data);
+		this.min.fromByteReader(data);
+		this.max.fromByteReader(data);
 	}
 
+	/**
+	 * Convenience function to set the <code>x</code>, <code>y</code> and <code>z</code> values of <code>min</code> and <code>max</code> to <code>Math.NaN</code>.
+	 */
 	setNaN()
 	{
 		this.min.setNaN();
@@ -224,9 +399,15 @@ export class BoundingBox
 	}
 }
 
+/**
+ * Convenience class containing 1 function to convert <code>FFLiResourcePartsInfo.WindowBits</code> to ZLib <code>windowBits</code>.
+ */
 export class WindowBitConverter
 {
 
+	/**
+	 * Converts <code>FFLiResourcePartsInfo.WindowBits</code> to ZLib <code>windowBits</code>.
+	 */
 	static fFLiResourceWindowBitsToZlibWindowBits(windowBits)
 	{
 		if (windowBits <= 7) {
@@ -242,6 +423,9 @@ export class WindowBitConverter
 	}
 }
 
+/**
+ * Passed to <code>FFLResource.FromByteReader</code> to provide more options for memory-management.
+ */
 export class FFLiResourceLoaderObjects
 {
 	resourceHeader;
@@ -253,7 +437,7 @@ export class FFLiResourceLoaderObjects
 	textureEyebrow = new Array(24);
 	textureWrinkle = new Array(12);
 	textureMakeup = new Array(12);
-	textureGlasses = new Array(9);
+	textureGlass = new Array(9);
 	textureMole = new Array(2);
 	textureMouth = new Array(37);
 	textureMustache = new Array(6);
@@ -262,7 +446,7 @@ export class FFLiResourceLoaderObjects
 	shapeCapNormal = new Array(132);
 	shapeCapHat = new Array(132);
 	shapeFaceline = new Array(12);
-	shapeGlasses = new Array(1);
+	shapeGlass = new Array(1);
 	shapeMask = new Array(12);
 	shapeNoseline = new Array(18);
 	shapeNose = new Array(18);
@@ -279,17 +463,17 @@ export class FFLiPartData
 	footer;
 	data;
 
-	fromByteUtils(bUtils, size)
+	fromByteReader(bUtils, size)
 	{
 		for (let i = 0; i < 6; i++) {
-			if (this.header.elementSize[i] <= 200000000 && this.header.elementSize[i] > 0) {
+			if (this.header.elementSize[i] <= 20000000 && this.header.elementSize[i] > 0) {
 				bUtils.seek(this.header.elementOffset[i]);
 				bUtils.readRaw(this.header.elementSize[i], this.data[i]);
 			}
 		}
 		let a = true;
 		for (const i of this.header.elementSize) {
-			if (i != 0 && i <= 200000000) {
+			if (i <= 20000000 && i > 0) {
 				a = false;
 			}
 		}
@@ -298,14 +482,14 @@ export class FFLiPartData
 			return;
 		}
 		bUtils.seek(size - 16);
-		this.footer.fromByteUtils(bUtils);
+		this.footer.fromByteReader(bUtils);
 	}
 
 	loadHeader(data)
 	{
-		const bUtils = new FUByteUtils();
+		const bUtils = new ByteReader();
 		bUtils.data = data;
-		this.header.fromByteUtils(bUtils);
+		this.header.fromByteReader(bUtils);
 		this.used = true;
 		return bUtils;
 	}
@@ -330,20 +514,20 @@ export class FFLiPartDataHeader
 	boundingBox = new BoundingBox();
 	transform = new Array(6);
 
-	fromByteUtils(bUtils)
+	fromByteReader(bUtils)
 	{
 		for (let i = 0; i < 6; i++) {
-			this.elementOffset[i] = bUtils.readUInt(4);
+			this.elementOffset[i] = bUtils.readSInt(4);
 		}
 		for (let i = 0; i < 6; i++) {
-			this.elementSize[i] = bUtils.readUInt(4);
+			this.elementSize[i] = bUtils.readSInt(4);
 		}
-		if (this.elementSize[FFLiResourceShapeElementType.INDEX] < 200000) {
+		if (this.elementSize[FFLiResourceShapeElementType.INDEX] < 20000000) {
 			this.elementSize[FFLiResourceShapeElementType.INDEX] *= 2;
 		}
-		this.boundingBox.fromByteUtils(bUtils);
+		this.boundingBox.fromByteReader(bUtils);
 		for (let i = 0; i < 6; i++) {
-			this.transform[i].fromByteUtils(bUtils);
+			this.transform[i].fromByteReader(bUtils);
 		}
 	}
 
@@ -361,16 +545,16 @@ export class FFLiPartDataFooter
 	format;
 	mipCount;
 
-	fromByteUtils(data)
+	fromByteReader(data)
 	{
 		this.mipOffset = data.readUInt(4);
-		this.width = data.readUInt(2);
-		this.height = data.readUInt(2);
-		let t = data.readUInt(1);
+		this.width = data.readUShort(2);
+		this.height = data.readUShort(2);
+		let t = data.readByte();
 		if (t < 3) {
 			this.format = t;
 		}
-		this.mipCount = data.readUInt(1);
+		this.mipCount = data.readByte();
 		data.padding(2);
 	}
 }
@@ -385,25 +569,25 @@ export class FFLiResourcePartsInfo
 	memoryLevel;
 	strategy;
 	partData;
-	#bReader = new FUByteUtils();
+	#bReader;
 
-	fromByteUtils(data, objects)
+	fromByteReader(data, objects)
 	{
 		this.offset = data.readUInt(4);
 		this.uncompressedSize = data.readUInt(4);
 		console.assert(this.uncompressedSize < 20000000 && this.uncompressedSize % 2 == 0, "Uncompressed Size invalid (should pass UncompressedSize < 20000000 and (UncompressedSize % 2) == 0)");
 		this.compressedSize = data.readUInt(4);
 		console.assert(this.compressedSize <= 20000000, "Compressed Size too large (should be <= 20000000)");
-		this.compressionLevel = data.readUInt(1);
+		this.compressionLevel = data.readByte();
 		console.assert(this.uncompressedSize == 0 || this.compressionLevel < 11, "Compression Level invalid (should pass UncompressedSize == 0 or CompressionLevel < 11)");
-		this.windowBits = data.readUInt(1);
-		this.memoryLevel = data.readUInt(1);
+		this.windowBits = data.readByte();
+		this.memoryLevel = data.readByte();
 		console.assert(this.uncompressedSize == 0 || this.memoryLevel < 9, "Memory Level invalid (should pass UncompressedSize == 0 or MemoryLevel < 9)");
-		this.strategy = data.readUInt(1);
+		this.strategy = data.readByte();
 		console.assert(this.strategy <= 6, "Strategy too large (should be <= 6)");
 	}
 
-	loadHeader(data, dataBuffer, compressedBuffer)
+	loadHeader(data, dataBuffer, compressedBuffer, compressionImplementation)
 	{
 		if (this.uncompressedSize == 0) {
 			this.partData.setUnused();
@@ -418,7 +602,7 @@ export class FFLiResourcePartsInfo
 			return;
 		}
 		data.readRaw(this.compressedSize, compressedBuffer);
-		ZlibImpl.decompress(compressedBuffer, dataBuffer, WindowBitConverter.fFLiResourceWindowBitsToZlibWindowBits(this.windowBits), this.uncompressedSize);
+		compressionImplementation.decompress(compressedBuffer, dataBuffer, WindowBitConverter.fFLiResourceWindowBitsToZlibWindowBits(this.windowBits), this.compressedSize, this.uncompressedSize);
 		this.#bReader = this.partData.loadHeader(dataBuffer);
 		data.seek(oOffset);
 	}
@@ -426,7 +610,7 @@ export class FFLiResourcePartsInfo
 	loadPart()
 	{
 		if (this.partData.used) {
-			this.partData.fromByteUtils(this.#bReader, this.uncompressedSize);
+			this.partData.fromByteReader(this.#bReader, this.uncompressedSize);
 		}
 	}
 }
@@ -437,7 +621,7 @@ export class FFLiResourceHeader
 	expandedBufferSize;
 	isExpand;
 
-	fromByteUtils(data, objects)
+	fromByteReader(data, objects)
 	{
 		console.assert(data.readUTF8(4) == "FFRA", "Magic Header invalid (should be FFRA)");
 		console.assert(data.readUInt(4) == 458752, "Version invalid (should be 0x00070000)");
@@ -453,44 +637,44 @@ export class FFLiResourceTextureHeader
 {
 	textureMaxSize = new Int32Array(11);
 
-	fromByteUtils(data, objects)
+	fromByteReader(data, objects)
 	{
 		for (let i = 0; i < 11; i++) {
 			this.textureMaxSize[i] = data.readUInt(4);
 			console.assert(this.textureMaxSize[i] < 20000000 && this.textureMaxSize[i] % 4 == 0, "Texture Max Size invalid (should pass TextureMaxSize < 20000000 and (TextureMaxSize % 4) == 0)");
 		}
 		for (let i = 0; i < 3; i++) {
-			objects.textureBeard[i].fromByteUtils(data, objects);
+			objects.textureBeard[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 132; i++) {
-			objects.textureCap[i].fromByteUtils(data, objects);
+			objects.textureCap[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 62; i++) {
-			objects.textureEye[i].fromByteUtils(data, objects);
+			objects.textureEye[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 24; i++) {
-			objects.textureEyebrow[i].fromByteUtils(data, objects);
+			objects.textureEyebrow[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 12; i++) {
-			objects.textureWrinkle[i].fromByteUtils(data, objects);
+			objects.textureWrinkle[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 12; i++) {
-			objects.textureMakeup[i].fromByteUtils(data, objects);
+			objects.textureMakeup[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 9; i++) {
-			objects.textureGlasses[i].fromByteUtils(data, objects);
+			objects.textureGlass[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 2; i++) {
-			objects.textureMole[i].fromByteUtils(data, objects);
+			objects.textureMole[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 37; i++) {
-			objects.textureMouth[i].fromByteUtils(data, objects);
+			objects.textureMouth[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 6; i++) {
-			objects.textureMustache[i].fromByteUtils(data, objects);
+			objects.textureMustache[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 18; i++) {
-			objects.textureNoseline[i].fromByteUtils(data, objects);
+			objects.textureNoseline[i].fromByteReader(data, objects);
 		}
 	}
 }
@@ -499,63 +683,84 @@ export class FFLiResourceShapeHeader
 {
 	shapeMaxSize = new Int32Array(12);
 
-	fromByteUtils(data, objects)
+	fromByteReader(data, objects)
 	{
 		for (let i = 0; i < 12; i++) {
 			this.shapeMaxSize[i] = data.readUInt(4);
 			console.assert(this.shapeMaxSize[i] < 20000000 && this.shapeMaxSize[i] % 2 == 0, "Shape Max Size invalid (should pass ShapeMaxSize < 20000000 and (ShapeMaxSize % 2) == 0)");
 		}
 		for (let i = 0; i < 4; i++) {
-			objects.shapeBeard[i].fromByteUtils(data, objects);
+			objects.shapeBeard[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 132; i++) {
-			objects.shapeCapNormal[i].fromByteUtils(data, objects);
+			objects.shapeCapNormal[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 132; i++) {
-			objects.shapeCapHat[i].fromByteUtils(data, objects);
+			objects.shapeCapHat[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 12; i++) {
-			objects.shapeFaceline[i].fromByteUtils(data, objects);
+			objects.shapeFaceline[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 1; i++) {
-			objects.shapeGlasses[i].fromByteUtils(data, objects);
+			objects.shapeGlass[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 12; i++) {
-			objects.shapeMask[i].fromByteUtils(data, objects);
+			objects.shapeMask[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 18; i++) {
-			objects.shapeNoseline[i].fromByteUtils(data, objects);
+			objects.shapeNoseline[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 18; i++) {
-			objects.shapeNose[i].fromByteUtils(data, objects);
+			objects.shapeNose[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 132; i++) {
-			objects.shapeHairNormal[i].fromByteUtils(data, objects);
+			objects.shapeHairNormal[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 132; i++) {
-			objects.shapeHairHat[i].fromByteUtils(data, objects);
+			objects.shapeHairHat[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 132; i++) {
-			objects.shapeForeheadNormal[i].fromByteUtils(data, objects);
+			objects.shapeForeheadNormal[i].fromByteReader(data, objects);
 		}
 		for (let i = 0; i < 132; i++) {
-			objects.shapeForeheadHat[i].fromByteUtils(data, objects);
+			objects.shapeForeheadHat[i].fromByteReader(data, objects);
 		}
 	}
 }
 
+/**
+ * ## FFLResource
+ * <code>FFLResource</code> is used for the loading of FFL / AFL Resource files.
+ * ### Loading a Resource
+ * Use <code>FFLResource.FromByteReader</code> to load a resource from a <code>ByteReader</code>, storing objects in a <code>FFLiResourceLoaderObjects</code> object.
+ */
 export class FFLResource
 {
+	/**
+	 * Contains <code>true</code> if the resource has been loaded successfully.
+	 */
 	isLoaded = false;
-	isAFL23;
-	isAFL;
+	/**
+	 * Contains <code>true</code> if the resource has been detected as <code>AFLResHigh_2_3.dat</code>.
+	 * (<code>objects.ResourceHeader.ExpandedBufferSize == 0x2502DE0</code>)
+	 */
+	isAFL23 = false;
+	/**
+	 * Contains <code>true</code> if the resource has been detected as an <code>AFLRes*.dat</code> file.
+	 * (<code>IsAFL23 || objects.ResourceHeader.ExpandedBufferSize == 0x239D5E0</code>)
+	 */
+	isAFL = false;
 
-	fromByteUtils(data, objects)
+	/**
+	 * Loads a resource from a <code>ByteReader</code>, storing objects in a <code>FFLiResourceLoaderObjects</code> object.
+	 */
+	fromByteReader(data, objects)
 	{
-		objects.resourceHeader.fromByteUtils(data, objects);
+		objects.resourceHeader.fromByteReader(data, objects);
 		this.isAFL23 = objects.resourceHeader.expandedBufferSize == 38809056;
 		this.isAFL = this.isAFL23 || objects.resourceHeader.expandedBufferSize == 37344736;
-		objects.textureHeader.fromByteUtils(data, objects);
-		objects.shapeHeader.fromByteUtils(data, objects);
+		objects.textureHeader.fromByteReader(data, objects);
+		objects.shapeHeader.fromByteReader(data, objects);
+		this.isLoaded = true;
 	}
 }

@@ -1,0 +1,76 @@
+.track-options {
+	width: 100%;
+	height: 55dvh;
+	background-color: var(--background-100);
+	border: 1px solid var(--background-200);
+	border-radius: 5px;
+}
+
+.track-play {
+	width: 350px;
+	margin: 0;
+	padding: 0;
+	overflow-y: scroll;
+	height: 75%;
+}
+
+.track-play-option {
+	width: 100%;
+	height: 40px;
+	text-align: left;
+	background-color: color-mix(in oklab, var(--background-100) 50%, var(--background-200) 50%);
+	border: none;
+	color: var(--text-700);
+	padding-left: 10px;
+	transition-duration: 0.25s;
+	margin: 0;
+}
+
+.track-play-option:hover {
+	cursor: pointer;
+	background-color: var(--background-200);
+	color: var(--text-600);
+	transition-duration: 0.25s;
+}
+
+.track-play-option.active {
+	background-color: color-mix(in oklab, var(--primary-400) 35%, var(--mix-cl) 65%);
+	color: var(--text-800);
+	transition-duration: 0.25s;
+}
+
+.track-play-option.active:hover {
+	background-color: color-mix(in oklab, var(--primary-400) 50%, var(--mix-cl) 50%);
+	color: var(--text-950);
+	transition-duration: 0.25s;
+}
+
+@media (prefers-color-scheme: dark) {
+	.track-play-option {
+		background-color: var(--background-200);
+	}
+
+	.track-play-option:hover {
+		background-color: var(--background-300);
+	}
+
+	.track-play-option.active {
+		background-color: color-mix(in oklab, var(--primary-400) 50%, var(--mix-cl) 50%);
+	}
+
+	.track-play-option.active:hover {
+		background-color: color-mix(in oklab, var(--primary-400) 60%, var(--mix-cl) 40%);
+	}
+}
+
+.song-listing {
+	width: 175px;
+}
+
+#other-songs {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	overflow-x: scroll;
+	width: 100%;
+}

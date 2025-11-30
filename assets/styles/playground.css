@@ -1,0 +1,13 @@
+.editor-container {
+	height: 500px;
+	width: 100%
+}
+
+.editor-container a {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	text-decoration: none;
+}
+
+.suggest-widget a {
+	font-family: "Consolas", monospace;
+}

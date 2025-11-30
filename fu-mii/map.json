@@ -3,6 +3,10 @@
 	"name": "Welcome",
 	"base": true
 }, {
+	"uri": "/fu-mii/playground.html",
+	"name": "Playground",
+	"base": true
+}, {
 	"uri": "/fu-mii/intro.html",
 	"name": "Introduction",
 	"base": true
@@ -14,6 +18,10 @@
 		{
 			"uri": "/fu-mii/ff/store.html",
 			"name": "Mii Data Formats",
+			"base": true
+		}, {
+			"uri": "/fu-mii/ff/mexp.html",
+			"name": "Mii Expression Formats",
 			"base": true
 		}
 	]
