@@ -20,7 +20,7 @@
 	text-align: left;
 	background-color: color-mix(in oklab, var(--background-100) 50%, var(--background-200) 50%);
 	border: none;
-	color: var(--text-700);
+	color: var(--error);
 	padding-left: 10px;
 	transition-duration: 0.25s;
 	margin: 0;
@@ -29,19 +29,19 @@
 .track-play-option:hover {
 	cursor: pointer;
 	background-color: var(--background-200);
-	color: var(--text-600);
+	color: var(--error);
 	transition-duration: 0.25s;
 }
 
 .track-play-option.active {
 	background-color: color-mix(in oklab, var(--primary-400) 35%, var(--mix-cl) 65%);
-	color: var(--text-800);
+	color: var(--error);
 	transition-duration: 0.25s;
 }
 
 .track-play-option.active:hover {
 	background-color: color-mix(in oklab, var(--primary-400) 50%, var(--mix-cl) 50%);
-	color: var(--text-950);
+	color: var(--error);
 	transition-duration: 0.25s;
 }
 

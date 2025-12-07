@@ -52,7 +52,7 @@ while True:
 		case "new":
 			songs[input("  ID: ")] = {
 				"name": input("  Name: "),
-				"made": input("  Song Creation Date (MM/YYYY, e.g. 11/2025): ")
+				"made": input("  Song Creation Date (DD/MM/YYYY, e.g. 30/11/2025): ")
 			}
 		case "del":
 			del songs[input("  ID: ")]

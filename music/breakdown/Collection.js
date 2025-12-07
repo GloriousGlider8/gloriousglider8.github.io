@@ -36,7 +36,7 @@ var Collection = (function() {
     }
     Song.prototype._read = function() {
       this.name = KaitaiStream.bytesToStr(this._io.readBytesTerm(0, false, true, true), "ASCII");
-      this.creationMmYyyy = KaitaiStream.bytesToStr(this._io.readBytesTerm(0, false, true, true), "ASCII");
+      this.creationDdMmYyyy = KaitaiStream.bytesToStr(this._io.readBytesTerm(0, false, true, true), "ASCII");
       this.id = KaitaiStream.bytesToStr(this._io.readBytesTerm(0, false, true, true), "ASCII");
     }
 

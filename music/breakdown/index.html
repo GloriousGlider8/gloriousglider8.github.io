@@ -24,7 +24,7 @@
 </head>
 <body style="overflow: hidden;">
 	<h1 class="text-center">Song Breakdown</h1>
-	<div class="track-options">
+	<div class="track-options hide-on-no-d">
 		<div class="button-container" style="height: 100%">
 			<div style="height: 100%; aspect-ratio: 1 / 1;" id="current-chart-cont"></div>
 			<div style="padding-left: 25px;">
@@ -34,13 +34,25 @@
 				<div id="track-play" class="track-play"></div>
 			</div>
 			<div style="padding-left: 25px;">
-				<h3 id="active-track-title" style="padding-top: 73px; margin-bottom: 0;">Select a track to view more info and listen to audio demos.</h3>
+				<h3 id="active-track-title" style="padding-top: 73px; margin-bottom: 0;"></h3>
+
+				<div id="dl-progress-div">
+					<progress id="dl-progress" value="0" max=100></progress>
+					<p id="dl-progress-text" style="display: inline;">0%</p>
+				</div>
+
 				<p id="active-track-info" style="margin-top: 5px; margin-bottom: 5px;"></p>
 
 				<audio id="audio-track" style="margin-top: 5px;" class="hidden" controls></audio>
 			</div>
 		</div>
 	</div>
+	<div id="dl-progress-div-2">
+		<h3 id="dl-status-2" style="margin-bottom: 0;"></h3>
+		<progress id="dl-progress-2" value="0" max=100></progress>
+		<p id="dl-progress-text-2" style="display: inline;">0%</p>
+	</div>
+	<div class="hide-on-d" id="over-time-graph"></div>
 	<div style="width: 100%;">
 		<h2 id="other-tracks"></h2>
 		<div id="other-songs" style="overflow-x: scroll; width: 100%;"></div>

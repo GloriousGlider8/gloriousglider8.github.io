@@ -1,0 +1,62 @@
+.mii-icon {
+	width: 100px;
+	height: 100px;
+	margin: 5px;
+	background-color: rgba(var(--color), 0.25);
+	border-radius: 5px;
+	border: 1px solid rgb(var(--color));
+	transition-duration: 0.25s;
+}
+
+.mii-icon:hover {
+	background-color: rgba(var(--color), 0.50);
+	cursor: pointer;
+	transition-duration: 0.25s;
+}
+
+.mii-icon.active {
+	background-color: rgba(var(--color), 0.75);
+}
+
+.mii-list {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 350px;
+	padding-left: 10px;
+	padding-top: 25px;
+	display: grid;
+}
+
+.mii-name-hover {
+	pointer-events: none;
+	position: relative;
+	background-color: var(--background-200);
+	border-radius: 5px;
+	filter: drop-shadow(0 0 0.125rem black);
+	padding: 10px;
+	text-align: center;
+	top: -125px;
+	width: 120px;
+	left: -20px;
+	opacity: 0;
+	transition-duration: 0.25s;
+}
+
+.mii-icon:hover .mii-name-hover {
+	top: -150px;
+	opacity: 1;
+	transition-duration: 0.25s;
+}
+
+.mii-context-menu {
+	position: fixed;
+	z-index: 9999;
+	background-color: rgba(0, 0, 0, 0.5);
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid rgb(64, 64, 64);
+	backdrop-filter: blur(5px);
+	min-width: 125px;
+	transition-duration: 0.25s;
+	transition-property: color, background-color, opacity, transform, border-color, border-width, box-shadow, filter;
+}

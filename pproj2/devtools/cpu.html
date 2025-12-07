@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	<title>pproj2 dev tools</title>
+	<link rel="stylesheet" href="/assets/styles/common.css">
+	<link rel="stylesheet" href="/assets/styles/force-dark.css">
+	<link rel="stylesheet" href="/assets/styles/miidisplay.css">
+	<script src="https://kit.fontawesome.com/1a33e75b22.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/kaitai-struct/KaitaiStream.js"></script>
+	<script src="/pproj2/devtools/GdflGroup.js"></script>
+	<script src="/jslib/jszip.min.js"></script>
+	<script src="/pproj2/devtools/cpu.js" type="module"></script>
+</head>
+<body class="background-default" style="background-image: url('/assets/pp2bg.png')">
+	<h1 class="text-center">Mii Patch Generator</h1>
+
+	<div id="site" style="display: none; backdrop-filter: blur(5px); border: 1px solid var(--background-300); border-radius: 5px; padding: 20px;">
+		<div class="button-container">
+			<div class="contained-button" style="border-radius: 5px; padding-left: 10px; padding-bottom: 10px;">
+				<h2 class="text-center" style="margin-top: 0;">Character List</h2>
+				<div class="button-container">
+					<button class="contained-button button green" onclick="window.fileExport()"><i class="fa-solid fa-download"></i> Export</button>
+					<button class="contained-button button blue" onclick="window.newMii()"><i class="fa-solid fa-user-plus"></i> Add Mii</button>
+				</div>
+				<p id="current-count"></p>
+				<div class="messagebox yellow" id="warn-mb" style="display: none;">
+					<p id="ugmii-warning" style="margin-top: 5px; margin-bottom: 0; display: none;"><span class="icon-embed-in-topbar"><i class="fa-solid fa-triangle-exclamation"></i> Ungrouped Miis</span><br/>
+					Please group all Miis. If a Mii is intended to be special, assign it the <code>SPC</code> prefix.</p>
+					<p id="unbal-warning" style="margin-top: 5px; margin-bottom: 0; display: none;"><span class="icon-embed-in-topbar"><i class="fa-solid fa-triangle-exclamation"></i> Group Unbalance</span><br/>
+					Please ensure all difficulty groups have the same number of Miis.</p>
+				</div>
+				<div class="button-container">
+					<div class="contained-button">
+						<h3 class="text-center" style="margin-bottom: 0;">Grouped Miis</h3>
+						<div id="mii-list" class="mii-list" style="grid-template-columns: repeat(auto-fit, 110px); grid-template-rows: repeat(auto-fill, 110px);"></div>
+					</div>
+					<div class="contained-button">
+						<h3 class="text-center text-yellow" style="margin-bottom: 0;">Ungrouped Miis</h3>
+						<div id="ungrp-list" class="mii-list" style="grid-template-columns: repeat(auto-fit, 110px); grid-template-rows: repeat(auto-fill, 110px);"></div>
+					</div>
+					<div class="contained-button">
+						<h3 class="text-center" style="margin-bottom: 0;">Special Miis</h3>
+						<div id="mgdmo-list" class="mii-list" style="grid-template-columns: repeat(auto-fit, 110px); grid-template-rows: repeat(auto-fill, 110px);"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="mii-context-menu" class="mii-context-menu" style="opacity: 0%; left: 0; top: 0; pointer-events: none;">
+		<p style="margin: 0;" id="context-text"><span class="bold">DFT_Isobel</span><br/>Ungrouped</p>
+		<div style="margin-top: 5px">
+			<div class="button-container" style="margin-top: 5px; height: 30px;"><button type="button" id="context-download" onclick="window.contextDownload()" class="button green contained-button"><i class="fa-solid fa-download icon-embed-in-text"></i> Export</button></div>
+			<div class="button-container" style="margin-top: 5px; height: 30px;"><button type="button" id="context-assign" onclick="window.contextAssign()" class="button blue contained-button"><i class="fa-solid fa-user-tag icon-embed-in-text"></i> Assign</button></div>
+			<div class="button-container" style="margin-top: 5px; height: 30px;"><button type="button" id="context-delete" onclick="window.contextDelete()" class="button red contained-button"><i class="fa-solid fa-user-minus icon-embed-in-text"></i> Delete</button></div>
+		</div>
+	</div>
+
+	<div id="file-upload" class="center-cont" style="width: 100%; height: 100%; margin: 0; position: absolute; top: 0; left: 0; display: flex;">
+		<form class="form-in-flex" action="javascript:window.submitFiles();" style="background-color: transparent; backdrop-filter: blur(5px);">
+			<h1 class="text-center">Setup</h1>
+			<p>Please attach your <a href="pproj2/devdocs/files/miibased.html#group-gdfl"><code>group.gdfl</code></a> and <a href="pproj2/devdocs/files/miibased.html#cpudiff-json"><code>cpudiff.json</code></a> files.<br/>
+			Don't worry, these will not be uploaded to anywhere<br/>other than your device.</p>
+
+			<label for="group-gdfl" style="display: inline;"><code>group.gdfl</code></label>
+			<input type="file" accept=".gdfl" id="group-gdfl" style="display: inline;">
+			<br/>
+			<label for="cpudiff-json" style="display: inline;"><code>cpudiff.json</code></label>
+			<input type="file" accept=".json" id="cpudiff-json" style="display: inline;">
+
+			<p></p>
+
+			<div id="err-file-missing" class="messagebox red" style="display: none; margin-bottom: 20px;">
+				<p style="margin-bottom: 0;" class="icon-embed-in-topbar"><i class="fa-solid fa-circle-xmark"></i> File(s) Missing</p>
+				<p style="margin-top: 5px;">Please make sure you have uploaded all required files!</p>
+			</div>
+
+			<div id="err-file-invalid" class="messagebox red" style="display: none; margin-bottom: 20px;">
+				<p style="margin-bottom: 0;" class="icon-embed-in-topbar"><i class="fa-solid fa-circle-xmark"></i> File(s) Invalid</p>
+				<p style="margin-top: 5px;">Please make sure all files you have uploaded are valid!</p>
+			</div>
+
+			<div class="button-container"><button type="submit" class="button green contained-button">Start<i class="fa-solid fa-arrow-right icon-embed-in-text"></i></button></div>
+		</form>
+	</div>
+</body>
+</html>

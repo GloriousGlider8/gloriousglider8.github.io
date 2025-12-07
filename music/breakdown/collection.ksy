@@ -18,7 +18,7 @@ types:
       - id: name
         type: strz
         encoding: ASCII
-      - id: creation_mm_yyyy
+      - id: creation_dd_mm_yyyy
         type: strz
         encoding: ASCII
       - id: id
