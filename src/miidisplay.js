@@ -45,7 +45,6 @@ export async function CharInfoToImgSrc(charInfo) {
 	let stDataBytes = new Uint8Array(96)
 	Ver3StoreData.toStoreDataBytes(stDataBytes, charInfo)
 
-	return "/assets/placeholder-100.png"
 	return `https://mii-unsecure.ariankordi.net/miis/image.png?data=${stDataBytes.toHex()}&type=face_only&resourceType=middle&width=100`
 }
 
