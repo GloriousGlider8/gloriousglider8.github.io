@@ -453,6 +453,7 @@ form {
 	pointer-events: none;
 	border: 1px solid grey;
 	transition-duration: 0.5s;
+	backdrop-filter: blur(5px);
 }
 
 .link-icon:hover .icon-hint,

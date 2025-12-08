@@ -49,8 +49,8 @@ function calculateTally() {
 	document.getElementById("current-count").innerHTML = `<span class="underline">Group Count:</span><br/>
 	Beginner (1): ${cpudiffData.group[0].length}<br/>
 	Standard (2): ${cpudiffData.group[1].length}<br/>
-	Expert (3): ${cpudiffData.group[2].length}<br/>
-	Advanced (4): ${cpudiffData.group[3].length}<br/>
+	Advanced (3): ${cpudiffData.group[2].length}<br/>
+	Expert (4): ${cpudiffData.group[3].length}<br/>
 	Master (5): ${cpudiffData.group[4].length}<br/>
 	<span class="text-yellow">Ungrouped</span> (?): ${ug}<br/>
 	Special: ${sp}<br/>
@@ -78,7 +78,7 @@ function findMii(id) {
 function removeMii(id) {
 	let i = 0
 	for (const mii of groupData.miis) {if (mii.name == id) {break}; i++}
-	groupData.miis.splice(i, 0)
+	groupData.miis.splice(i, 1)
 }
 
 //#region Context Functions
@@ -138,6 +138,7 @@ function contextAssign() {
 	if (specialIds.includes(context)) {alert("Cannot assign a group to special Miis."); return}
 
 	let group = prompt("Assign to which group?\n1 - Beginner\n2 - Standard\n3 - Expert\n4 - Advanced\n5 - Master", "1")
+	if (!group) {return}
 	try {group = parseInt(group)} catch (err) {alert("Enter a valid number."); return}
 
 	if (!Object.keys(cpudiffData.diff).includes(context)) {
@@ -237,7 +238,7 @@ async function fileExport() {
 	assets.file("cpudiff.json", JSON.stringify(cpudiffData))
 
 	let ffsdFolder = zip.folder("facelibcontent").folder("ffsd")
-	console.log(groupData.miis)
+	
 	for (const mii of groupData.miis) {
 		ffsdFolder.file(`${mii.name}.ffsd`, mii.contents)
 	}

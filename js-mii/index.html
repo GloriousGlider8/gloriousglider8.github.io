@@ -6,16 +6,18 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-	<title>js mii renderer</title>
+	<title>Mii.fu Renderer</title>
 	<link rel="stylesheet" href="/assets/styles/common.css">
+	<link rel="stylesheet" href="/assets/styles/force-dark.css">
+	<link rel="stylesheet" href="/assets/styles/modern.css">
 	<script src="https://kit.fontawesome.com/1a33e75b22.js" crossorigin="anonymous"></script>
 	<!--<script src="/js-mii/src/render.js" type="module"></script>!-->
 </head>
-<body class="background-default" style="overflow: visible; overflow-x: hidden;">
+<body class="background-default" style="overflow: visible; overflow-x: hidden; background-image: url('/assets/gdflbg.png')">
 	<p class="top-bar yellow"><i class="fa-solid fa-circle-exclamation icon-embed-in-topbar"></i>Client-sided rendering is not functional yet. Switch backend to "ariankordi.net" to render for the moment.</p>
 	<div class="center-cont" style="padding-top: 600px; padding-bottom: 600px;" id="center-cont">
 	<form class="form-in-flex" action="javascript:MiiRender();">
-		<h1 class="text-center">JS Mii Renderer</h1>
+		<h1 class="text-center">Mii.fu Renderer</h1>
 		<div class="button-container space-bottom">
 			<button type="button" class="button contained-button"><i class="fa-solid fa-download icon-embed-in-text"></i>Download Model</button>
 			<button type="button" class="button contained-button"><i class="fa-solid fa-square-binary icon-embed-in-text"></i>Convert Data</button>
@@ -28,7 +30,7 @@
 		<input type="file" id="f" class="contained-button">
 		<button type="submit" class="button contained-button green"><i class="fa-solid fa-image icon-embed-in-text"></i>Render</button>
 		</div>
-		<p style="margin-top: 2px;">Supports <a href="https://mii.j0.lol/wiki/RFLStoreData">RSD</a>, <a href="https://mii.j0.lol/wiki/Ver3StoreData">FFSD (+CFSD)</a>, <a href="https://mii.j0.lol/wiki/Nn::mii::CharInfo">CHARINFO</a> and <a href="/fu-mii/ff/miic">MIIC</a>.</p>
+		<p style="margin-top: 2px;">Supports <a href="/fu-mii/ff/store.html#wii">RSD</a>, <a href="/fu-mii/ff/store.html#ffl">FFSD (+CFSD)</a>, <a href="/fu-mii/ff/store.html#nx">CHARINFO</a> and <a href="/fu-mii/ff/store.html#nxw">MIIC</a>.</p>
 
 		<label for="exp">Expression</label>
 		<select id="exp">
@@ -71,7 +73,7 @@
 		<div class="button-container" style="margin: 0;">
 			<div><img src="/assets/placeholder-wsrender.png" alt="Mii.fu Render"><p style="margin: 0;" class="text-center"><span class="underline text-green">This site</span><br/>Mii.fu</p></div>
 			<div><img src="/assets/arian-wsrender.png" alt="FFL Decomp. Render"><p style="margin: 0;" class="text-center"><a href="https://mii-unsecure.ariankordi.net">ariankordi.net</a><br/>FFL Decomp.</p></div>
-			<div><img src="/assets/miinxw-wsrender.png" alt="FFL.js Render"><p style="margin: 0;" class="text-center"><a href="https://mii.nxw.pw">mii.nxw.pw</a><br/>FFL.js</p></div>
+			<div><img src="/assets/miinxw-wsrender.png" alt="FFL.js Render"><p style="margin: 0;" class="text-center"><a href="https://mii.nxw.pw">mii.nxw.pw</a><br/>FFL.js Fork</p></div>
 			<div><img src="/assets/placeholder-wsrender.png" alt="Official Render"><p style="margin: 0;" class="text-center"><span class="underline text-red">Wii U Mii Maker</span></a><br/>Official FFL</p></div>
 		</div>
 
