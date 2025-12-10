@@ -15,11 +15,11 @@
 .question-bg {
 	width: 100vw;
 	height: 100vh;
-	background-color: var(--background-400);
+	background-color: #8f8f8f;
 	position: absolute;
 }
 
-.result-title {
+.result-title, .question-title {
 	position: absolute;
 	width: 100vw;
 	text-align: center;
@@ -29,12 +29,7 @@
 }
 
 .question-title {
-	position: absolute;
-	width: 100vw;
-	text-align: center;
 	font-size: 8vw;
-	color: white;
-	top: -10vh;
 }
 
 .question-text {
@@ -126,4 +121,14 @@ body {
 	padding: 0;
 	margin: 0;
 	overflow: hidden;
+}
+
+.answer-box {
+	font-size: xx-large;
+	align-items: center;
+}
+
+.answer-box code {
+	background-color: transparent/*#d8d8d8*/;
+	color: black;
 }

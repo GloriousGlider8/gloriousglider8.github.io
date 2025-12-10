@@ -158,8 +158,6 @@ function contextAssign() {
 }
 
 function contextDelete() {
-	contextEl.remove()
-
 	removeMii(context)
 
 	if (specialIds.includes(context)) {sp--} else if (!Object.keys(cpudiffData.diff).includes(context)) {ug--}
@@ -168,6 +166,7 @@ function contextDelete() {
 	if (Object.keys(cpudiffData.diff).includes(context)) {delete cpudiffData.diff[context]}
 	
 	contextClose()
+	contextEl.remove()
 
 	calculateTally()
 	updateWarnings()
@@ -289,7 +288,10 @@ async function constructSite() {
 }
 
 //#region Submit Files
+
 async function submitFiles() {
+	let mExistList = []
+
 	document.getElementById("err-file-missing").style.display = "none"
 	document.getElementById("err-file-invalid").style.display = "none"
 
@@ -326,6 +328,38 @@ async function submitFiles() {
 	}
 
 	document.getElementById("file-upload").style.display = "none"
+
+	for (const mii of groupData.miis) {
+		mExistList.push(mii.name)
+	}
+
+	let diffEntryToRemove = []
+	let groupEntryToRemove = []
+
+	let alertEntries = ""
+
+	for (const mii of Object.keys(cpudiffData.diff)) {
+		if (!mExistList.includes(mii)) {
+			diffEntryToRemove.push(mii)
+			alertEntries = `${alertEntries}\n[diff] ${mii}`
+			delete cpudiffData.diff[mii]
+		}
+	}
+
+	let i = 0
+	for (const group of cpudiffData.group) {let i1 = 0;for (const mii of group) {
+		if (!mExistList.includes(mii)) {
+			groupEntryToRemove.push(mii)
+			alertEntries = `${alertEntries}\n[group][${i}] ${mii}`
+			group.splice(i1, 1)
+		}
+		i1++
+	}i++}
+
+	if (diffEntryToRemove.length > 0 || groupEntryToRemove.length > 0) {
+		alert(`cpudiff.json references Miis that are not present in group.gdfl!\nThe following entries will be removed:${alertEntries}`)
+	}
+
 	constructSite()
 }
 

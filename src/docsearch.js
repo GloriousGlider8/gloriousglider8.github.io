@@ -1,14 +1,8 @@
 let siteMap = undefined
 
 const sidebarHTML = `
-<div style="width: 100%; height: 80px;">
-	<h3 style="width: 100%; text-align: center; margin: 5px;" id="quest-title">Learning the Basics</h3>
-	<progress value="1" max="5" style="width: 95%; left: 2.5%; position: absolute;" id="quest-progress"></progress>
-	<button type="button" class="button" style="position: absolute; width: 95%; left: 2.5%; top: 58px">Take a Quiz</button>
-</div>
-<hr>
-<input id="sidebar-page-search" type="text" class="page-search" placeholder="Search..." style="margin: 0;">
-<div style="margin: 0; width: 100%; top: 140px; position: absolute; overflow-y: auto;" id="page-list">
+<input id="sidebar-page-search" type="text" class="page-search" placeholder="Search..." style="margin: 0; margin-top: 10px;">
+<div style="margin: 0; width: 100%; top: 50px; position: absolute; overflow-y: auto;" id="page-list">
 </div>`
 
 const pageLocation = window.location.pathname

@@ -11,6 +11,10 @@
 	"name": "Introduction",
 	"base": true
 }, {
+	"name": "FAQs",
+	"uri": "/fu-mii/faqs.html",
+	"base": true
+}, {
 	"name": "File Formats",
 	"base": false,
 	"id": "ff",

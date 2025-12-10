@@ -69,7 +69,7 @@ var coll = document.getElementsByClassName("collapsible");
 		btn.addEventListener("click", () => {
 			const codeEl = btn.parentElement;
 			if (!codeEl) return;
-			updateClipboard(`${window.location.href}#${codeEl.id}`);
+			updateClipboard(`${window.location.href.split("#")[0]}#${codeEl.id}`);
 		});
 	});
 })
